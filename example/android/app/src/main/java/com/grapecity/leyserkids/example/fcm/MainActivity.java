@@ -1,4 +1,4 @@
-package com.example.reactnativefcmnotification;
+package com.grapecity.leyserkids.example.fcm;
 
 import com.facebook.react.ReactActivity;
 

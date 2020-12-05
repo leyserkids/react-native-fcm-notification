@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import FCMNotification from 'react-native-fcm-notification';
+import { StyleSheet, View, Text, } from 'react-native';
+import FCM from 'react-native-fcm-notification';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [token, setToken] = React.useState<string | undefined>();
 
   React.useEffect(() => {
-    FCMNotification.multiply(3, 7).then(setResult);
+    FCM.getToken().then(setToken)
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Result: {token}</Text>
     </View>
   );
 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "962733454647",
+    "project_id": "fcmnotificationexample-77167",
+    "storage_bucket": "fcmnotificationexample-77167.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962733454647:android:d952e1f5b9b075650756b2",
+        "android_client_info": {
+          "package_name": "com.grapecity.leyserkids.example.fcm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962733454647-gt2bop1qsi0gvk6sclllhc9q8uvgvodo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKl4ZsL1nOtUSpASSa2Dm3StmRbEjsuLc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "962733454647-gt2bop1qsi0gvk6sclllhc9q8uvgvodo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
