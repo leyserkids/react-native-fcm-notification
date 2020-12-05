@@ -1,9 +1,9 @@
 import { NativeModules } from 'react-native';
 
-type FCMNotificationType = {
-  multiply(a: number, b: number): Promise<number>;
+type RNFIRMessagingType = {
+  getToken(): Promise<string>;
 };
 
-const { FCMNotification } = NativeModules;
+const { RNFIRMessaging } = NativeModules;
 
-export default FCMNotification as FCMNotificationType;
+export default RNFIRMessaging as RNFIRMessagingType;
