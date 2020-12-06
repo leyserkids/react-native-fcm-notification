@@ -20,7 +20,7 @@ namespace FCMNotificationServerExample.Controllers
         }
 
         [HttpGet]
-        public async Task<string> Get([FromQuery] string token)
+        public async Task<string> Get([FromQuery] string token, [FromQuery] bool isDelay = false)
         {
             if (string.IsNullOrEmpty(token))
             {
@@ -28,28 +28,58 @@ namespace FCMNotificationServerExample.Controllers
                 return "Invalid";
             }
 
-            _logger.LogInformation("Start send to: {0}", token);
-
             var message = new Message
             {
                 Token = token,
-                Notification = new Notification()
+                //Notification = new Notification()
+                //{
+                //    Title = "Title",
+                //    Body = "Body",
+                //},
+                Android = new AndroidConfig
                 {
-                    Title = "Title",
-                    Body = "Body",
-                },
+                    Data = new Dictionary<string, string>
+                    {
+                        { "title", "title1" }
+                    },
+                    Priority = Priority.High
+                }
             };
 
-            try
+
+            if (isDelay)
             {
-                var id = await FirebaseMessaging.DefaultInstance.SendAsync(message);
-                return id;
+                _ = Task.Run(async () =>
+                {
+                    await Task.Delay(5000);
+                    _logger.LogInformation("Start send to: {0}", token);
+                    await FirebaseMessaging.DefaultInstance.SendAsync(message);
+                }).ContinueWith(t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        _logger.LogError(t.Exception, "Failed to send.");
+                    }
+                });
+                _logger.LogInformation("Scheduled");
+                return "Scheduled";
+
             }
-            catch (Exception ex)
+            else
             {
-                _logger.LogError(ex, "Failed to send.");
-                return string.Format("Failed: {0}", ex);
+                try
+                {
+                    _logger.LogInformation("Start send to: {0}", token);
+                    var id = await FirebaseMessaging.DefaultInstance.SendAsync(message);
+                    return id;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to send.");
+                    return string.Format("Failed: {0}", ex);
+                }
             }
+
         }
     }
 }
