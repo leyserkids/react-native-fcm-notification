@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import androidx.core.app.NotificationManagerCompat
 import com.facebook.react.bridge.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -26,6 +27,12 @@ class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBa
                 Log.w(TAG, "Fetching FCM registration token failed", exception)
                 promise.reject(null, "Failed to get Token: $exception")
             }
+    }
+
+    @ReactMethod
+    fun isNotificationsEnabled(promise: Promise) {
+        var isNotificationsEnabled = NotificationManagerCompat.from(reactApplicationContext).areNotificationsEnabled()
+        promise.resolve(isNotificationsEnabled)
     }
 
     @ReactMethod

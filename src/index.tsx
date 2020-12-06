@@ -10,6 +10,7 @@ type GooglePlayServiceStatus = {
 
 type RNFIRMessagingType = {
   getToken(): Promise<string>;
+  isNotificationsEnabled(): Promise<boolean>
   getGooglePlayServiceStatus(): Promise<GooglePlayServiceStatus>
   isBadgeCounterSupported(): Promise<boolean>
   isBackgroundRestricted(): Promise<boolean>

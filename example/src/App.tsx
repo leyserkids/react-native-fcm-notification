@@ -7,9 +7,11 @@ export default function App() {
   const [googlePlayServiceStatus, setGooglePlayServiceStatus] = React.useState<string | undefined>();
   const [isBadgeCounterSupported, setIsBadgeCounterSupported] = React.useState<string | undefined>();
   const [isBackgroundRestricted, setIsBackgroundRestricted] = React.useState<string | undefined>();
+  const [isNotificationsEnabled, setIsNotificationsEnabled] = React.useState<string | undefined>();
 
   React.useEffect(() => {
     FCM.getToken().then(setToken)
+    FCM.isNotificationsEnabled().then(x => setIsNotificationsEnabled(`${x}`))
     FCM.getGooglePlayServiceStatus().then(x => setGooglePlayServiceStatus(JSON.stringify(x)))
     FCM.isBadgeCounterSupported().then(x => setIsBadgeCounterSupported(`${x}`))
     FCM.isBackgroundRestricted().then(x => setIsBackgroundRestricted(`${x}`))
@@ -28,6 +30,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Token: {token}</Text>
+      <Text>isNotificationsEnabled: {isNotificationsEnabled}</Text>
       <Text>GooglePlayServiceStatus: {googlePlayServiceStatus}</Text>
       <Text>isBadgeCounterSupported: {isBadgeCounterSupported}</Text>
       <Text>isBackgroundRestricted: {isBackgroundRestricted}</Text>
