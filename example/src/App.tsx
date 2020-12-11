@@ -2,6 +2,8 @@ import * as React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import FCM from 'react-native-fcm-notification';
 
+const SERVER_ADDR = 'https://notification.kr1.cc';
+
 export default function App() {
   const [token, setToken] = React.useState<string | undefined>();
   const [googlePlayServiceStatus, setGooglePlayServiceStatus] = React.useState<string | undefined>();
@@ -18,7 +20,7 @@ export default function App() {
   }, []);
 
   const invokeServerPush = (isDelay: boolean = false) => {
-    fetch(`http://192.168.31.221:5000/api/fcm?isDelay=${isDelay}&token=${token}`, {
+    fetch(`${SERVER_ADDR}/api/fcm?isDelay=${isDelay}&token=${token}`, {
       method: 'GET'
     }).then(async r => Alert.alert("Invoke Success", await r.text()))
       .catch(err => {
