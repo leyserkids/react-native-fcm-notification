@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>962733454647-9vl1fc5gu58bd3mr7ks50d3e7j2a5qne.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.962733454647-9vl1fc5gu58bd3mr7ks50d3e7j2a5qne</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCy6phh9C6JRNT86OlBpdkE50O8hHgzGak</string>
+	<key>GCM_SENDER_ID</key>
+	<string>962733454647</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.grapecity.leyserkids.example.fcm</string>
+	<key>PROJECT_ID</key>
+	<string>fcmnotificationexample-77167</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fcmnotificationexample-77167.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:962733454647:ios:1731176e78e9270d0756b2</string>
+</dict>
+</plist>
