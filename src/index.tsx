@@ -6,14 +6,14 @@ type GooglePlayServiceStatus = {
   error?: string;
   isUserResolvableError?: boolean;
   hasResolution?: boolean;
-}
+};
 
 type RNFIRMessagingType = {
   getToken(): Promise<string>;
-  isNotificationsEnabled(): Promise<boolean>
-  getGooglePlayServiceStatus(): Promise<GooglePlayServiceStatus>
-  isBadgeCounterSupported(): Promise<boolean>
-  isBackgroundRestricted(): Promise<boolean>
+  isNotificationsEnabled(): Promise<boolean>;
+  getGooglePlayServiceStatus(): Promise<GooglePlayServiceStatus>;
+  isBadgeCounterSupported(): Promise<boolean>;
+  isBackgroundRestricted(): Promise<boolean>;
 };
 
 const { RNFIRMessaging } = NativeModules;

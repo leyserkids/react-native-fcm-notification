@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-
-
-		5E555C0D2413F4C50049A1A2 /* FCMNotification.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* FCMNotification.mm */; };
+		5E555C0D2413F4C50049A1A2 /* RNFIRMessaging.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNFIRMessaging.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,12 +23,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		134814201AA4EA6300B7C361 /* libFCMNotification.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFCMNotification.a; sourceTree = BUILT_PRODUCTS_DIR; };
-
-
-		B3E7B5881CC2AC0600A0062D /* FCMNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCMNotification.h; sourceTree = "<group>"; };
-		B3E7B5891CC2AC0600A0062D /* FCMNotification.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FCMNotification.mm; sourceTree = "<group>"; };
-
+		134814201AA4EA6300B7C361 /* libReactNativeFCMNotification.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libReactNativeFCMNotification.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3E7B5881CC2AC0600A0062D /* RNFIRMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNFIRMessaging.h; sourceTree = "<group>"; };
+		B3E7B5891CC2AC0600A0062D /* RNFIRMessaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNFIRMessaging.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +42,7 @@
 		134814211AA4EA7D00B7C361 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				134814201AA4EA6300B7C361 /* libFCMNotification.a */,
+				134814201AA4EA6300B7C361 /* libReactNativeFCMNotification.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -55,11 +50,8 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-
-
-				B3E7B5881CC2AC0600A0062D /* FCMNotification.h */,
-				B3E7B5891CC2AC0600A0062D /* FCMNotification.mm */,
-
+				B3E7B5881CC2AC0600A0062D /* RNFIRMessaging.h */,
+				B3E7B5891CC2AC0600A0062D /* RNFIRMessaging.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -67,9 +59,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		58B511DA1A9E6C8500147676 /* FCMNotification */ = {
+		58B511DA1A9E6C8500147676 /* ReactNativeFCMNotification */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "FCMNotification" */;
+			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "ReactNativeFCMNotification" */;
 			buildPhases = (
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
@@ -79,9 +71,9 @@
 			);
 			dependencies = (
 			);
-			name = FCMNotification;
+			name = ReactNativeFCMNotification;
 			productName = RCTDataManager;
-			productReference = 134814201AA4EA6300B7C361 /* libFCMNotification.a */;
+			productReference = 134814201AA4EA6300B7C361 /* libReactNativeFCMNotification.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -98,7 +90,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "FCMNotification" */;
+			buildConfigurationList = 58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "ReactNativeFCMNotification" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -111,7 +103,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				58B511DA1A9E6C8500147676 /* FCMNotification */,
+				58B511DA1A9E6C8500147676 /* ReactNativeFCMNotification */,
 			);
 		};
 /* End PBXProject section */
@@ -121,10 +113,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
-
-				5E555C0D2413F4C50049A1A2 /* FCMNotification.mm in Sources */,
-
+				5E555C0D2413F4C50049A1A2 /* RNFIRMessaging.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,9 +224,8 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = FCMNotification;
+				PRODUCT_NAME = ReactNativeFCMNotification;
 				SKIP_INSTALL = YES;
-
 			};
 			name = Debug;
 		};
@@ -252,16 +240,15 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = FCMNotification;
+				PRODUCT_NAME = ReactNativeFCMNotification;
 				SKIP_INSTALL = YES;
-
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "FCMNotification" */ = {
+		58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "ReactNativeFCMNotification" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58B511ED1A9E6C8500147676 /* Debug */,
@@ -270,7 +257,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "FCMNotification" */ = {
+		58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "ReactNativeFCMNotification" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58B511F01A9E6C8500147676 /* Debug */,
