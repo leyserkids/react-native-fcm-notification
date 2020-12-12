@@ -31,21 +31,36 @@ namespace FCMNotificationServerExample.Controllers
             var message = new Message
             {
                 Token = token,
-                //Notification = new Notification()
-                //{
-                //    Title = "Title",
-                //    Body = "Body",
-                //},
                 Android = new AndroidConfig
                 {
                     Data = new Dictionary<string, string>
                     {
-                        { "title", "title1" }
+                        { "title", "title1" },
+                        { "body", "body1" },
+                        { "badge", "2" }
                     },
                     Priority = Priority.High
+                },
+                Apns = new ApnsConfig
+                {
+                    Headers = new Dictionary<string, string>
+                    {
+                        { "apns-push-type", "alert" },
+                        { "apns-priority", "10" }
+                    },
+                    Aps = new Aps
+                    {
+                        ContentAvailable = true,
+                        Badge = 2,
+                        Sound = "default",
+                        Alert = new ApsAlert
+                        {
+                            Title = "title1",
+                            Body = "body1"
+                        }
+                    }
                 }
             };
-
 
             if (isDelay)
             {
@@ -53,7 +68,8 @@ namespace FCMNotificationServerExample.Controllers
                 {
                     await Task.Delay(5000);
                     _logger.LogInformation("Start send to: {0}", token);
-                    await FirebaseMessaging.DefaultInstance.SendAsync(message);
+                    var id = await FirebaseMessaging.DefaultInstance.SendAsync(message);
+                    _logger.LogInformation("Scheduled Returns: {0}", id);
                 }).ContinueWith(t =>
                 {
                     if (t.IsFaulted)
@@ -71,6 +87,7 @@ namespace FCMNotificationServerExample.Controllers
                 {
                     _logger.LogInformation("Start send to: {0}", token);
                     var id = await FirebaseMessaging.DefaultInstance.SendAsync(message);
+                    _logger.LogInformation("Returns: {0}", id);
                     return id;
                 }
                 catch (Exception ex)
