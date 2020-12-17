@@ -18,8 +18,12 @@ export default function App() {
   const [isBackgroundRestricted, setIsBackgroundRestricted] = React.useState<string | undefined>();
   const [isNotificationsEnabled, setIsNotificationsEnabled] = React.useState<string | undefined>();
 
-  React.useEffect(() => {
+  const getToken = () => {
     FCM.getToken().then(setToken);
+  };
+
+  React.useEffect(() => {
+    getToken();
     FCM.isNotificationsEnabled().then((x) => setIsNotificationsEnabled(`${x}`));
     if (Platform.OS === 'android') {
       FCM.getGooglePlayServiceStatus().then((x) => setGooglePlayServiceStatus(JSON.stringify(x)));
@@ -39,9 +43,13 @@ export default function App() {
       });
   };
 
+
+
   return (
     <View style={styles.container}>
-      <Text>Token: {token}</Text>
+      <TouchableOpacity onPress={() => getToken()}>
+        <Text>Token: {token}</Text>
+      </TouchableOpacity>
       <Text>isNotificationsEnabled: {isNotificationsEnabled}</Text>
       <Text>GooglePlayServiceStatus: {googlePlayServiceStatus}</Text>
       <Text>isBadgeCounterSupported: {isBadgeCounterSupported}</Text>

@@ -3,6 +3,6 @@
 
 @import UserNotifications;
 
-@interface RNFIRMessaging : NSObject <RCTBridgeModule>
+@interface RNFIRMessaging : NSObject <RCTBridgeModule, UNUserNotificationCenterDelegate>
 
 @end
