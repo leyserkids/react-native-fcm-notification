@@ -20,7 +20,7 @@ namespace FCMNotificationServerExample.Controllers
         }
 
         [HttpGet]
-        public async Task<string> Get([FromQuery] string token, [FromQuery] bool isDelay = false)
+        public async Task<string> Get([FromQuery] string token, [FromQuery] bool isDelay = false, [FromQuery] string title = "Title", [FromQuery] string body = "Body", [FromQuery] int badge = 2)
         {
             if (string.IsNullOrEmpty(token))
             {
@@ -35,9 +35,9 @@ namespace FCMNotificationServerExample.Controllers
                 {
                     Data = new Dictionary<string, string>
                     {
-                        { "title", "title1" },
-                        { "body", "body1" },
-                        { "badge", "2" }
+                        { "title", title },
+                        { "body", body },
+                        { "badge", $"{badge}" }
                     },
                     Priority = Priority.High
                 },
@@ -51,14 +51,22 @@ namespace FCMNotificationServerExample.Controllers
                     Aps = new Aps
                     {
                         ContentAvailable = true,
-                        Badge = 2,
+                        Badge = badge,
                         Sound = "default",
                         Alert = new ApsAlert
                         {
-                            Title = "title1",
-                            Body = "body1"
+                            Title = title,
+                            Body = body
                         }
                     }
+                },
+                Data = new Dictionary<string, string>
+                {
+                    { "extras", System.Text.Json.JsonSerializer.Serialize(new Dictionary<string, string>{
+                        { "isDelay", isDelay.ToString().ToLower() },
+                        { "category", nameof(FCMNotificationServerExample) },
+                        { "timestamp", DateTime.Now.Ticks.ToString() }
+                    }) },
                 }
             };
 
