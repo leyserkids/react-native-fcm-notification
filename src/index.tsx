@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, NativeEventEmitter } from 'react-native';
 
 type GooglePlayServiceStatus = {
   isAvailable: boolean;
@@ -17,5 +17,11 @@ type RNFIRMessagingType = {
 };
 
 const { RNFIRMessaging } = NativeModules;
+
+const eventEmitter = new NativeEventEmitter(RNFIRMessaging || {});
+
+eventEmitter.addListener('notification_received', (event) => {
+  console.log(event.eventProperty) // "someValue"
+});
 
 export default RNFIRMessaging as RNFIRMessagingType;

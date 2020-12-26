@@ -17,11 +17,6 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 
 class NotificationBuilder(context: Context) {
-    private val METADATA_DEFAULT_ICON = "com.google.firebase.messaging.default_notification_icon"
-    private val METADATA_DEFAULT_CHANNEL_ID = "com.google.firebase.messaging.default_notification_channel_id"
-    private val FCM_FALLBACK_NOTIFICATION_CHANNEL = "fcm_fallback_notification_channel"
-    private val FCM_FALLBACK_NOTIFICATION_CHANNEL_LABEL = "fcm_fallback_notification_channel_label"
-
     private val mContext = context;
     private var mMetadata = Bundle.EMPTY;
 
@@ -138,5 +133,9 @@ class NotificationBuilder(context: Context) {
 
     companion object {
         private const val TAG = "NotificationBuilder"
+        private const val METADATA_DEFAULT_ICON = "com.google.firebase.messaging.default_notification_icon"
+        private const val METADATA_DEFAULT_CHANNEL_ID = "com.google.firebase.messaging.default_notification_channel_id"
+        private const val FCM_FALLBACK_NOTIFICATION_CHANNEL = "fcm_fallback_notification_channel"
+        private const val FCM_FALLBACK_NOTIFICATION_CHANNEL_LABEL = "fcm_fallback_notification_channel_label"
     }
 }

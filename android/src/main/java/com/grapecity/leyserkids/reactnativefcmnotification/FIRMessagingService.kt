@@ -12,15 +12,18 @@ class FIRMessagingService : FirebaseMessagingService() {
         if (remoteMessage.data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: ${remoteMessage.data}")
 
-//            if (/* Check if data needs to be processed by long running job */ true) {
-//                // For long-running tasks (10 seconds or more) use WorkManager.
-//                scheduleJob()
-//            } else {
-//                // Handle message within 10 seconds
-//                handleNow()
-//            }
+//          if (/* Check if data needs to be processed by long running job */ true) {
+//              // For long-running tasks (10 seconds or more) use WorkManager.
+//              scheduleJob()
+//          } else {
+//              // Handle message within 10 seconds
+//              handleNow()
+//          }
+            val title = remoteMessage.data["title"] ?: "Title"
+            val body = remoteMessage.data["body"] ?: "Body"
 
-             NotificationBuilder(this).sendNotification(remoteMessage.data["title"] ?: "Notification", "Data Message")
+            NotificationBuilder(this).sendNotification(body, title)
+            ReactNativeEventDelivery(this).sendNotification(title)
         }
 
         // Check if message contains a notification payload.
