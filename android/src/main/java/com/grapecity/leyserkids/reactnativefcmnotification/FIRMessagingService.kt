@@ -21,9 +21,10 @@ class FIRMessagingService : FirebaseMessagingService() {
 //          }
             val title = remoteMessage.data["title"] ?: "Title"
             val body = remoteMessage.data["body"] ?: "Body"
+            val extras = remoteMessage.data["extras"] ?: ""
 
-            NotificationBuilder(this).sendNotification(body, title)
-            ReactNativeEventDelivery(this).sendNotification(title)
+            NotificationBuilder(this).sendNotification(title, body)
+            ReactNativeEventDelivery(this).sendNotification(title, body, extras)
         }
 
         // Check if message contains a notification payload.

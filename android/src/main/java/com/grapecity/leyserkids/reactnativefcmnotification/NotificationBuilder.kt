@@ -24,7 +24,7 @@ class NotificationBuilder(context: Context) {
         mMetadata =  getManifestMetadata()
     }
 
-    fun sendNotification(messageBody: String, messageTitle: String) {
+    fun sendNotification(messageTitle: String, messageBody: String) {
         val intent = Intent(mContext, FIRMessagingService::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(mContext, 0 /* Request code */, intent,

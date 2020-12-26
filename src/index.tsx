@@ -21,7 +21,7 @@ const { RNFIRMessaging } = NativeModules;
 const eventEmitter = new NativeEventEmitter(RNFIRMessaging || {});
 
 eventEmitter.addListener('notification_received', (event) => {
-  console.log(event.eventProperty) // "someValue"
+  console.log(event)
 });
 
 export default RNFIRMessaging as RNFIRMessagingType;

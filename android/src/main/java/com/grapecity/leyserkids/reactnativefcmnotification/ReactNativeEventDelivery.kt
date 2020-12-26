@@ -3,6 +3,7 @@ package com.grapecity.leyserkids.reactnativefcmnotification
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.Nullable
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactInstanceManager.ReactInstanceEventListener
@@ -15,9 +16,11 @@ import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEm
 class ReactNativeEventDelivery(context: Context) {
     private val mContext = context;
 
-    fun sendNotification(title: String) {
+    fun sendNotification(title: String, body: String, extras: String) {
         val params: WritableMap = Arguments.createMap()
-        params.putString("eventProperty", title)
+        params.putString("title", title)
+        params.putString("body", body)
+        params.putString("extras", extras)
         sendEvent(NOTIFICATION_EVENT, params)
     }
 
@@ -32,8 +35,10 @@ class ReactNativeEventDelivery(context: Context) {
             val context = mReactInstanceManager.currentReactContext
             // If it's constructed, send a notification
             if (context != null) {
+                Log.d(TAG, "context != null")
                 sendEventImpl(context, eventName, params)
             } else {
+                Log.d(TAG, "context == null")
                 // Otherwise wait for construction, then send the notification
                 mReactInstanceManager.addReactInstanceEventListener(object : ReactInstanceEventListener {
                     override fun onReactContextInitialized(context: ReactContext) {
@@ -58,6 +63,7 @@ class ReactNativeEventDelivery(context: Context) {
     }
 
     companion object {
+        private const val TAG = "EventDelivery"
         private const val NOTIFICATION_EVENT = "notification_received"
     }
 }
