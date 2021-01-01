@@ -6,10 +6,14 @@ import android.util.Log
 import me.leolin.shortcutbadger.ShortcutBadger
 
 class BadgeHelper(private val context: Context) {
-    private var sharedPreferences: SharedPreferences? = null
+    private val sharedPreferences: SharedPreferences
+
+    init {
+        sharedPreferences = context.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE)
+    }
 
     fun getBadgeCount(): Int {
-        return sharedPreferences!!.getInt(BADGE_COUNT_KEY, 0)
+        return sharedPreferences.getInt(BADGE_COUNT_KEY, 0)
     }
 
     fun setBadgeCount(badgeCount: Int): Boolean {
@@ -24,12 +28,12 @@ class BadgeHelper(private val context: Context) {
     }
 
     fun isBadgeSupported(): Boolean {
-        var current = getBadgeCount();
+        val current = getBadgeCount();
         return setBadgeCount(current);
     }
 
     private fun persistentBadgeCount(badgeCount: Int) {
-        val editor = sharedPreferences!!.edit()
+        val editor = sharedPreferences.edit()
         editor.putInt(BADGE_COUNT_KEY, badgeCount)
         editor.apply()
     }
@@ -38,9 +42,5 @@ class BadgeHelper(private val context: Context) {
         private const val TAG = "BadgeHelper"
         private const val PREFERENCES_FILE = "BadgeCountFile"
         private const val BADGE_COUNT_KEY = "BadgeCount"
-    }
-
-    init {
-        sharedPreferences = context.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE) as SharedPreferences
     }
 }

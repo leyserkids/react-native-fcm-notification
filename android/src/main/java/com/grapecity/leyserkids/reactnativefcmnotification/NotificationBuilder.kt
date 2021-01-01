@@ -16,9 +16,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.app.NotificationCompat
 
-class NotificationBuilder(context: Context) {
-    private val mContext = context;
-    private var mMetadata = Bundle.EMPTY;
+class NotificationBuilder(private val context: Context) {
+    private val mMetadata: Bundle;
 
     init {
         mMetadata =  getManifestMetadata()
@@ -33,15 +32,15 @@ class NotificationBuilder(context: Context) {
         val bundle = Bundle()
         bundle.putString("title", messageTitle)
         bundle.putString("body", messageBody)
-        val intent = Intent(mContext, intentClass)
+        val intent = Intent(context, intentClass)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtras(bundle);
-        val pendingIntent = PendingIntent.getActivity(mContext, 0 /* Request code */, intent,
+        val pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
             PendingIntent.FLAG_ONE_SHOT)
 
         val channelId = getChannelId(mMetadata)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(mContext, channelId)
+        val notificationBuilder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(getNotificationIcon(mMetadata))
             .setContentTitle(messageTitle)
             .setContentText(messageBody)
@@ -53,7 +52,7 @@ class NotificationBuilder(context: Context) {
             .setStyle(NotificationCompat.BigTextStyle().bigText(messageBody))
             .setPriority(NotificationCompat.PRIORITY_MAX)
 
-        val notificationManager = mContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -69,7 +68,7 @@ class NotificationBuilder(context: Context) {
 
     private fun getManifestMetadata(): Bundle {
         try {
-            val info = mContext.packageManager.getApplicationInfo(mContext.packageName, PackageManager.GET_META_DATA)
+            val info = context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
             if (info.metaData != null) {
                 return info.metaData
             }
@@ -95,17 +94,17 @@ class NotificationBuilder(context: Context) {
     private fun getNotificationIcon(metadata: Bundle): Int {
         var iconId: Int = metadata.getInt(METADATA_DEFAULT_ICON, 0)
 
-        if (iconId == 0 || !isValidIcon(mContext.resources, iconId)) {
+        if (iconId == 0 || !isValidIcon(context.resources, iconId)) {
             // No icon found so far. Falling back to default App icon (launcher icon).
             try {
                 /* flags= */
-                iconId = mContext.packageManager.getApplicationInfo(mContext.packageName, 0).icon
+                iconId = context.packageManager.getApplicationInfo(context.packageName, 0).icon
             } catch (e: PackageManager.NameNotFoundException) {
                 Log.w(TAG, "Couldn't get own application info: $e")
             }
         }
 
-        if (iconId == 0 || !isValidIcon(mContext.resources, iconId)) {
+        if (iconId == 0 || !isValidIcon(context.resources, iconId)) {
             // Wow, app doesn't have a launcher icon. Falling back on icon-placeholder used by the OS.
             iconId = android.R.drawable.sym_def_app_icon
         }
@@ -141,8 +140,8 @@ class NotificationBuilder(context: Context) {
     }
 
     private fun getMainActivityClass(): Class<*>? {
-        val packageName: String = mContext.packageName
-        val launchIntent: Intent? = mContext.packageManager.getLaunchIntentForPackage(packageName)
+        val packageName: String = context.packageName
+        val launchIntent: Intent? = context.packageManager.getLaunchIntentForPackage(packageName)
         val className = launchIntent?.component!!.className
         return try {
             Class.forName(className)

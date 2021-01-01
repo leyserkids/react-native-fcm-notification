@@ -13,9 +13,7 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter
 
 
-class ReactNativeEventDelivery(context: Context) {
-    private val mContext = context;
-
+class ReactNativeEventDelivery(private val context: Context) {
     fun sendNotification(title: String, body: String, extras: String) {
         val params: WritableMap = Arguments.createMap()
         params.putString("title", title)
@@ -31,7 +29,7 @@ class ReactNativeEventDelivery(context: Context) {
         val handler = Handler(Looper.getMainLooper())
         handler.post {
             // Construct and load our normal React JS code bundle
-            val mReactInstanceManager = (mContext.applicationContext as ReactApplication).reactNativeHost.reactInstanceManager
+            val mReactInstanceManager = (context.applicationContext as ReactApplication).reactNativeHost.reactInstanceManager
             val context = mReactInstanceManager.currentReactContext
             // If it's constructed, send a notification
             if (context != null) {
