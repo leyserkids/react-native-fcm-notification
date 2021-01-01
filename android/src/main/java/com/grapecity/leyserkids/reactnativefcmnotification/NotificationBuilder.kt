@@ -25,8 +25,13 @@ class NotificationBuilder(context: Context) {
     }
 
     fun sendNotification(messageTitle: String, messageBody: String) {
-        val intent = Intent(mContext, FIRMessagingService::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val intentClass = getMainActivityClass()
+        if (intentClass == null) {
+            Log.e(TAG, "No activity class found for the notification")
+            return
+        }
+        val intent = Intent(mContext, intentClass)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         val pendingIntent = PendingIntent.getActivity(mContext, 0 /* Request code */, intent,
             PendingIntent.FLAG_ONE_SHOT)
 
@@ -128,6 +133,18 @@ class NotificationBuilder(context: Context) {
         } catch (ex: Resources.NotFoundException) {
             Log.e(TAG, "Couldn't find resource $resId, treating it as an invalid icon")
             false
+        }
+    }
+
+    private fun getMainActivityClass(): Class<*>? {
+        val packageName: String = mContext.packageName
+        val launchIntent: Intent? = mContext.packageManager.getLaunchIntentForPackage(packageName)
+        val className = launchIntent?.component!!.className
+        return try {
+            Class.forName(className)
+        } catch (e: ClassNotFoundException) {
+            e.printStackTrace()
+            null
         }
     }
 
