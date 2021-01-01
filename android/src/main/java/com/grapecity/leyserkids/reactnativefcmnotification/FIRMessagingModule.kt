@@ -2,6 +2,7 @@ package com.grapecity.leyserkids.reactnativefcmnotification
 
 import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent.parseIntent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationManagerCompat
@@ -14,6 +15,30 @@ import com.google.firebase.messaging.FirebaseMessaging
 class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
     override fun getName(): String {
         return "RNFIRMessaging"
+    }
+
+    @ReactMethod
+    fun getInitialNotification(promise: Promise) {
+        val activity = currentActivity
+        if (activity == null) {
+            promise.resolve(null)
+            return
+        }
+        val extras = activity.intent?.extras;
+
+        if (extras == null) {
+            promise.resolve(null)
+            return
+        }
+        val result: WritableMap = Arguments.createMap()
+//        bundle.putString("messageTitle", messageTitle)
+//        bundle.putString("messageBody", messageBody)
+        val messageTitle = extras.getString("title")
+        val messageBody = extras.getString("body")
+        Log.d(TAG, "Initial Notification: $messageTitle, $messageBody")
+        result.putString("title", messageTitle)
+        result.putString("body", messageBody)
+        promise.resolve(result)
     }
 
     @ReactMethod
@@ -31,13 +56,13 @@ class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBa
 
     @ReactMethod
     fun isNotificationsEnabled(promise: Promise) {
-        var isNotificationsEnabled = NotificationManagerCompat.from(reactApplicationContext).areNotificationsEnabled()
+        val isNotificationsEnabled = NotificationManagerCompat.from(reactApplicationContext).areNotificationsEnabled()
         promise.resolve(isNotificationsEnabled)
     }
 
     @ReactMethod
     fun isBadgeCounterSupported(promise: Promise) {
-        var isSupported = BadgeHelper(reactApplicationContext).isBadgeSupported()
+        val isSupported = BadgeHelper(reactApplicationContext).isBadgeSupported()
         promise.resolve(isSupported)
     }
 

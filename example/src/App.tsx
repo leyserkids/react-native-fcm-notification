@@ -8,11 +8,12 @@ import {
   Platform,
   TextInput,
 } from 'react-native';
-import FCM from 'react-native-fcm-notification';
+import FCM, { Notification } from 'react-native-fcm-notification';
 
 const SERVER_ADDR = 'https://notification.kr1.cc';
 
 export default function App() {
+  console.log("initialize");
   const [token, setToken] = React.useState<string | undefined>();
   const [googlePlayServiceStatus, setGooglePlayServiceStatus] = React.useState<string | undefined>();
   const [isBadgeCounterSupported, setIsBadgeCounterSupported] = React.useState<string | undefined>();
@@ -21,6 +22,12 @@ export default function App() {
 
   const [title, onChangeTitle] = React.useState('Title text');
   const [body, onChangeBody] = React.useState('Body text');
+
+  const [initialTitle, onChangeInitialTitle] = React.useState('');
+
+  FCM.getInitialNotification().then((message) => {
+    onChangeInitialTitle(message?.title);
+  });
 
   const getToken = () => {
     FCM.getToken().then(setToken);
@@ -34,6 +41,10 @@ export default function App() {
       FCM.isBadgeCounterSupported().then((x) => setIsBadgeCounterSupported(`${x}`));
       FCM.isBackgroundRestricted().then((x) => setIsBackgroundRestricted(`${x}`));
     }
+
+    FCM.onNotificationReceived(({ title }) => {
+      console.log('onNotificationReceived - messageTitle: ' + title)
+    });
   }, []);
 
   const invokeServerPush = (isDelay: boolean = false) => {
@@ -80,6 +91,7 @@ export default function App() {
           Server Push After 5 sec
         </Text>
       </TouchableOpacity>
+      <Text>InitialNotificationTitle: {initialTitle}</Text>
     </View>
   );
 }
@@ -88,7 +100,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   button: {
     borderColor: 'gray',

@@ -30,8 +30,12 @@ class NotificationBuilder(context: Context) {
             Log.e(TAG, "No activity class found for the notification")
             return
         }
+        val bundle = Bundle()
+        bundle.putString("title", messageTitle)
+        bundle.putString("body", messageBody)
         val intent = Intent(mContext, intentClass)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtras(bundle);
         val pendingIntent = PendingIntent.getActivity(mContext, 0 /* Request code */, intent,
             PendingIntent.FLAG_ONE_SHOT)
 

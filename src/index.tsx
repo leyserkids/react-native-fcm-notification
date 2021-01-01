@@ -1,6 +1,8 @@
 import { NativeModules, NativeEventEmitter } from 'react-native';
+const { RNFIRMessaging } = NativeModules;
+const eventEmitter = new NativeEventEmitter(RNFIRMessaging || {});
 
-type GooglePlayServiceStatus = {
+export type GooglePlayServiceStatus = {
   isAvailable: boolean;
   status: number;
   error?: string;
@@ -8,20 +10,45 @@ type GooglePlayServiceStatus = {
   hasResolution?: boolean;
 };
 
-type RNFIRMessagingType = {
-  getToken(): Promise<string>;
-  isNotificationsEnabled(): Promise<boolean>;
-  getGooglePlayServiceStatus(): Promise<GooglePlayServiceStatus>;
-  isBadgeCounterSupported(): Promise<boolean>;
-  isBackgroundRestricted(): Promise<boolean>;
+export type Notification = {
+  title: string;
+  body: string;
 };
 
-const { RNFIRMessaging } = NativeModules;
+class RNFIRMessagingWrapper {
+  constructor() {
+    if (!RNFIRMessaging) {
+      throw Error("Failed to initial FCM");
+    }
+  }
 
-const eventEmitter = new NativeEventEmitter(RNFIRMessaging || {});
+  async getToken(): Promise<string> {
+    return await RNFIRMessaging.getToken()
+  }
 
-eventEmitter.addListener('notification_received', (event) => {
-  console.log(event)
-});
+  async isNotificationsEnabled(): Promise<boolean> {
+    return await RNFIRMessaging.isNotificationsEnabled()
+  }
 
-export default RNFIRMessaging as RNFIRMessagingType;
+  async getGooglePlayServiceStatus(): Promise<GooglePlayServiceStatus> {
+    return await RNFIRMessaging.getGooglePlayServiceStatus()
+  }
+
+  async isBadgeCounterSupported(): Promise<boolean> {
+    return await RNFIRMessaging.isBadgeCounterSupported()
+  }
+
+  async isBackgroundRestricted(): Promise<boolean> {
+    return await RNFIRMessaging.isBackgroundRestricted()
+  }
+
+  async getInitialNotification(): Promise<Notification> {
+    return await RNFIRMessaging.getInitialNotification()
+  }
+
+  onNotificationReceived(handler: (event: Notification) => void) {
+    eventEmitter.addListener('notification_received', handler);
+  }
+}
+
+export default new RNFIRMessagingWrapper();

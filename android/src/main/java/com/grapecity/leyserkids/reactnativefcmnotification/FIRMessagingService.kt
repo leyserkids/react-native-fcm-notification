@@ -6,7 +6,7 @@ import com.google.firebase.messaging.RemoteMessage
 
 class FIRMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d(TAG, "From: ${remoteMessage.from}")
+        Log.d(TAG, "onMessageReceived From: ${remoteMessage.from}")
 
         // Check if message contains a data payload.
         if (remoteMessage.data.isNotEmpty()) {
