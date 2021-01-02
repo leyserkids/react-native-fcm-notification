@@ -2,7 +2,6 @@ package com.grapecity.leyserkids.reactnativefcmnotification
 
 import android.app.ActivityManager
 import android.content.Context
-import android.content.Intent.parseIntent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationManagerCompat
@@ -30,14 +29,8 @@ class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBa
             promise.resolve(null)
             return
         }
-        val result: WritableMap = Arguments.createMap()
-//        bundle.putString("messageTitle", messageTitle)
-//        bundle.putString("messageBody", messageBody)
-        val messageTitle = extras.getString("title")
-        val messageBody = extras.getString("body")
-        Log.d(TAG, "Initial Notification: $messageTitle, $messageBody")
-        result.putString("title", messageTitle)
-        result.putString("body", messageBody)
+
+        val result: WritableMap = Arguments.fromBundle(extras)
         promise.resolve(result)
     }
 
@@ -55,6 +48,17 @@ class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBa
     }
 
     @ReactMethod
+    fun deleteToken(promise: Promise) {
+        FirebaseMessaging.getInstance().deleteToken()
+            .addOnSuccessListener {
+                promise.resolve(true)
+            }
+            .addOnFailureListener {
+                promise.resolve(false)
+            }
+    }
+
+    @ReactMethod
     fun isNotificationsEnabled(promise: Promise) {
         val isNotificationsEnabled = NotificationManagerCompat.from(reactApplicationContext).areNotificationsEnabled()
         promise.resolve(isNotificationsEnabled)
@@ -64,6 +68,18 @@ class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBa
     fun isBadgeCounterSupported(promise: Promise) {
         val isSupported = BadgeHelper(reactApplicationContext).isBadgeSupported()
         promise.resolve(isSupported)
+    }
+
+    @ReactMethod
+    fun getBadgeCount(promise: Promise) {
+        val count = BadgeHelper(reactApplicationContext).getBadgeCount()
+        promise.resolve(count)
+    }
+
+    @ReactMethod
+    fun setBadgeCount(badgeCount: Int, promise: Promise) {
+        val ret = BadgeHelper(reactApplicationContext).setBadgeCount(badgeCount)
+        promise.resolve(ret)
     }
 
     @ReactMethod

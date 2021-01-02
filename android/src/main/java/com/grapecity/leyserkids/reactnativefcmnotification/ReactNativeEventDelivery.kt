@@ -1,6 +1,7 @@
 package com.grapecity.leyserkids.reactnativefcmnotification
 
 import android.content.Context
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -12,14 +13,16 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter
 
-
 class ReactNativeEventDelivery(private val context: Context) {
-    fun sendNotification(title: String, body: String, extras: String) {
-        val params: WritableMap = Arguments.createMap()
-        params.putString("title", title)
-        params.putString("body", body)
-        params.putString("extras", extras)
+    fun sendNotification(bundle: Bundle) {
+        val params: WritableMap = Arguments.fromBundle(bundle)
         sendEvent(NOTIFICATION_EVENT, params)
+    }
+
+    fun sendNewToken(token: String) {
+        val params: WritableMap = Arguments.createMap()
+        params.putString("token", token)
+        sendEvent(NEW_TOKEN_EVENT, params)
     }
 
     private fun sendEvent(eventName: String, @Nullable params: WritableMap) {
@@ -52,9 +55,7 @@ class ReactNativeEventDelivery(private val context: Context) {
         }
     }
 
-    private fun sendEventImpl(reactContext: ReactContext,
-                              eventName: String,
-                              @Nullable params: WritableMap) {
+    private fun sendEventImpl(reactContext: ReactContext, eventName: String, @Nullable params: WritableMap) {
         reactContext
             .getJSModule(RCTDeviceEventEmitter::class.java)
             .emit(eventName, params)
@@ -62,6 +63,5 @@ class ReactNativeEventDelivery(private val context: Context) {
 
     companion object {
         private const val TAG = "EventDelivery"
-        private const val NOTIFICATION_EVENT = "notification_received"
     }
 }

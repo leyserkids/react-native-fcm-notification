@@ -1,5 +1,6 @@
 package com.grapecity.leyserkids.reactnativefcmnotification
 
+import android.os.Bundle
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -8,44 +9,35 @@ class FIRMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "onMessageReceived From: ${remoteMessage.from}")
 
+        val rawIdHashCode = remoteMessage.messageId.hashCode();
+        val messageId = if (rawIdHashCode != 0) rawIdHashCode else System.currentTimeMillis().toInt()
+
         // Check if message contains a data payload.
         if (remoteMessage.data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: ${remoteMessage.data}")
 
-//          if (/* Check if data needs to be processed by long running job */ true) {
-//              // For long-running tasks (10 seconds or more) use WorkManager.
-//              scheduleJob()
-//          } else {
-//              // Handle message within 10 seconds
-//              handleNow()
-//          }
-            val title = remoteMessage.data["title"] ?: "Title"
-            val body = remoteMessage.data["body"] ?: "Body"
-            val extras = remoteMessage.data["extras"] ?: ""
+            val title = remoteMessage.data[Notification_Title] ?: applicationInfo.loadLabel(packageManager).toString()
+            val body = remoteMessage.data[Notification_Body] ?: ""
+            val badge = remoteMessage.data[Notification_Badge]?.toInt() ?: 0
+            val extras = remoteMessage.data[Notification_Extras] ?: ""
 
-            NotificationBuilder(this).sendNotification(title, body)
-            ReactNativeEventDelivery(this).sendNotification(title, body, extras)
+            val notification = Bundle()
+            notification.putInt(Notification_Id, messageId)
+            notification.putString(Notification_Title, title)
+            notification.putString(Notification_Body, body)
+            notification.putInt(Notification_Badge, badge)
+            notification.putString(Notification_Extras, extras)
+
+            NotificationBuilder(this).sendNotification(title, body, notification)
+            ReactNativeEventDelivery(this).sendNotification(notification)
+            BadgeHelper(this).setBadgeCount(badge)
         }
-
-        // Check if message contains a notification payload.
-//        remoteMessage.notification?.let {
-//            Log.d(TAG, "Message Notification Body: ${it.body}")
-//
-//            sendNotification(it.body, it.title, metadata)
-//        }
-
-
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
     }
 
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
 
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // FCM registration token to your app server.
-//        sendRegistrationToServer(token)
+        ReactNativeEventDelivery(this).sendNewToken(token)
     }
 
     companion object {

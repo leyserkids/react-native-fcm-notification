@@ -8,7 +8,7 @@ import {
   Platform,
   TextInput,
 } from 'react-native';
-import FCM, { Notification } from 'react-native-fcm-notification';
+import FCM from 'react-native-fcm-notification';
 
 const SERVER_ADDR = 'https://notification.kr1.cc';
 
@@ -25,10 +25,6 @@ export default function App() {
 
   const [initialTitle, onChangeInitialTitle] = React.useState('');
 
-  FCM.getInitialNotification().then((message) => {
-    onChangeInitialTitle(message?.title);
-  });
-
   const getToken = () => {
     FCM.getToken().then(setToken);
   };
@@ -42,9 +38,22 @@ export default function App() {
       FCM.isBackgroundRestricted().then((x) => setIsBackgroundRestricted(`${x}`));
     }
 
-    FCM.onNotificationReceived(({ title }) => {
-      console.log('onNotificationReceived - messageTitle: ' + title)
+    FCM.onNotificationReceived((message) => {
+      console.log(message)
     });
+
+    FCM.onNewToken((token) => {
+      console.log(token)
+    });
+
+    // FCM.deleteToken().then(console.log)
+
+    FCM.getInitialNotification().then((message) => {
+      console.log(message)
+      onChangeInitialTitle(message?.title);
+    });
+
+    FCM.getBadgeCount().then(FCM.setBadgeCount)
   }, []);
 
   const invokeServerPush = (isDelay: boolean = false) => {

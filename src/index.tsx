@@ -11,8 +11,15 @@ export type GooglePlayServiceStatus = {
 };
 
 export type Notification = {
+  id: number;
   title: string;
   body: string;
+  badge: number;
+  extras: string;
+};
+
+export type Token = {
+  token: string;
 };
 
 class RNFIRMessagingWrapper {
@@ -24,6 +31,10 @@ class RNFIRMessagingWrapper {
 
   async getToken(): Promise<string> {
     return await RNFIRMessaging.getToken()
+  }
+
+  async deleteToken(): Promise<boolean> {
+    return await RNFIRMessaging.deleteToken()
   }
 
   async isNotificationsEnabled(): Promise<boolean> {
@@ -45,9 +56,21 @@ class RNFIRMessagingWrapper {
   async getInitialNotification(): Promise<Notification> {
     return await RNFIRMessaging.getInitialNotification()
   }
+  
+  async getBadgeCount(): Promise<number> {
+    return await RNFIRMessaging.getBadgeCount()
+  }
 
-  onNotificationReceived(handler: (event: Notification) => void) {
-    eventEmitter.addListener('notification_received', handler);
+  async setBadgeCount(badgeCount: number): Promise<boolean> {
+    return await RNFIRMessaging.setBadgeCount(badgeCount)
+  }
+
+  onNotificationReceived(handler: (notification: Notification) => void) {
+    eventEmitter.addListener('notification_arrival_event', handler);
+  }
+
+  onNewToken(handler: (token: Token) => void) {
+    eventEmitter.addListener('new_token_event', handler);
   }
 }
 

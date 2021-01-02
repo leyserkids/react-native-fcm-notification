@@ -23,15 +23,12 @@ class NotificationBuilder(private val context: Context) {
         mMetadata =  getManifestMetadata()
     }
 
-    fun sendNotification(messageTitle: String, messageBody: String) {
+    fun sendNotification(title: String, body: String, bundle: Bundle) {
         val intentClass = getMainActivityClass()
         if (intentClass == null) {
             Log.e(TAG, "No activity class found for the notification")
             return
         }
-        val bundle = Bundle()
-        bundle.putString("title", messageTitle)
-        bundle.putString("body", messageBody)
         val intent = Intent(context, intentClass)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtras(bundle);
@@ -42,14 +39,14 @@ class NotificationBuilder(private val context: Context) {
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(getNotificationIcon(mMetadata))
-            .setContentTitle(messageTitle)
-            .setContentText(messageBody)
+            .setContentTitle(title)
+            .setContentText(body)
             .setAutoCancel(true)
             .setVisibility(NotificationCompat.VISIBILITY_SECRET)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(messageBody))
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
             .setPriority(NotificationCompat.PRIORITY_MAX)
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -153,9 +150,5 @@ class NotificationBuilder(private val context: Context) {
 
     companion object {
         private const val TAG = "NotificationBuilder"
-        private const val METADATA_DEFAULT_ICON = "com.google.firebase.messaging.default_notification_icon"
-        private const val METADATA_DEFAULT_CHANNEL_ID = "com.google.firebase.messaging.default_notification_channel_id"
-        private const val FCM_FALLBACK_NOTIFICATION_CHANNEL = "fcm_fallback_notification_channel"
-        private const val FCM_FALLBACK_NOTIFICATION_CHANNEL_LABEL = "fcm_fallback_notification_channel_label"
     }
 }
