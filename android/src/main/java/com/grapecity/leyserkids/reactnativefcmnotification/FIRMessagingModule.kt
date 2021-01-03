@@ -1,7 +1,9 @@
 package com.grapecity.leyserkids.reactnativefcmnotification
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationManagerCompat
@@ -14,6 +16,19 @@ import com.google.firebase.messaging.FirebaseMessaging
 class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
     override fun getName(): String {
         return "RNFIRMessaging"
+    }
+
+    init {
+        reactContext.addActivityEventListener( object: ActivityEventListener {
+            override fun onNewIntent(intent: Intent?) {
+//                val extras = intent?.extras;
+                Log.d(TAG, "onNewIntent")
+            }
+
+            override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     @ReactMethod
