@@ -13,7 +13,7 @@ import FCM from 'react-native-fcm-notification';
 const SERVER_ADDR = 'https://notification.kr1.cc';
 
 export default function App() {
-  console.log("initialize");
+  console.log('initialize');
   const [token, setToken] = React.useState<string | undefined>();
   const [googlePlayServiceStatus, setGooglePlayServiceStatus] = React.useState<string | undefined>();
   const [isBadgeCounterSupported, setIsBadgeCounterSupported] = React.useState<string | undefined>();
@@ -36,24 +36,24 @@ export default function App() {
       FCM.getGooglePlayServiceStatus().then((x) => setGooglePlayServiceStatus(JSON.stringify(x)));
       FCM.isBadgeCounterSupported().then((x) => setIsBadgeCounterSupported(`${x}`));
       FCM.isBackgroundRestricted().then((x) => setIsBackgroundRestricted(`${x}`));
+
+      FCM.getInitialNotification().then((message) => {
+        console.log(message);
+        onChangeInitialTitle(message?.title);
+      });
     }
 
     FCM.onNotificationReceived((message) => {
-      console.log(message)
+      console.log(message);
     });
 
-    FCM.onNewToken((token) => {
-      console.log(token)
+    FCM.onNewToken((newToken) => {
+      console.log(newToken);
     });
 
     // FCM.deleteToken().then(console.log)
 
-    FCM.getInitialNotification().then((message) => {
-      console.log(message)
-      onChangeInitialTitle(message?.title);
-    });
-
-    FCM.getBadgeCount().then(FCM.setBadgeCount)
+    FCM.getBadgeCount().then(FCM.setBadgeCount);
   }, []);
 
   const invokeServerPush = (isDelay: boolean = false) => {
@@ -76,29 +76,27 @@ export default function App() {
       <Text>GooglePlayServiceStatus: {googlePlayServiceStatus}</Text>
       <Text>isBadgeCounterSupported: {isBadgeCounterSupported}</Text>
       <Text>isBackgroundRestricted: {isBackgroundRestricted}</Text>
-      <View >
+      <View>
         <TextInput
-          onChangeText={text => onChangeTitle(text)}
+          onChangeText={(text) => onChangeTitle(text)}
           value={title}
-          placeholder={"Title"}
+          placeholder={'Title'}
           style={styles.textbox}
-          maxLength={20} />
+          maxLength={20}
+        />
         <TextInput
-          onChangeText={text => onChangeBody(text)}
+          onChangeText={(text) => onChangeBody(text)}
           value={body}
-          placeholder={"Body"}
+          placeholder={'Body'}
           style={styles.textbox}
-          maxLength={20} />
+          maxLength={20}
+        />
       </View>
       <TouchableOpacity onPress={() => invokeServerPush()}>
-        <Text style={styles.button}>
-          Server Push
-        </Text>
+        <Text style={styles.button}>Server Push</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => invokeServerPush(true)}>
-        <Text style={styles.button}>
-          Server Push After 5 sec
-        </Text>
+        <Text style={styles.button}>Server Push After 5 sec</Text>
       </TouchableOpacity>
       <Text>InitialNotificationTitle: {initialTitle}</Text>
     </View>
@@ -109,6 +107,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    marginTop: 40,
   },
   button: {
     borderColor: 'gray',
@@ -119,6 +118,6 @@ const styles = StyleSheet.create({
   textbox: {
     borderBottomColor: '#000000',
     borderBottomWidth: 1,
-    width: 150
-  }
+    width: 150,
+  },
 });

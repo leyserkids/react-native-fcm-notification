@@ -1,10 +1,15 @@
 #import "RNFIRMessaging.h"
-#import <React/RCTConvert.h>
-#import <Firebase/Firebase.h>
 
 @implementation RNFIRMessaging
 
+NSString *const FCMNotificationReceived = @"notification_arrival_event";
+NSString *const FCMNewToken = @"new_token_event";
+
 RCT_EXPORT_MODULE()
+
+- (NSArray<NSString *> *)supportedEvents {
+    return @[FCMNotificationReceived, FCMNewToken];
+}
 
 RCT_EXPORT_METHOD(getToken
                  :(RCTPromiseResolveBlock)resolve
@@ -37,6 +42,20 @@ RCT_EXPORT_METHOD(isNotificationsEnabled
     }
 
     resolve(@([RCTConvert BOOL:@(YES)]));
+}
+
+RCT_EXPORT_METHOD(setBadgeCount: (NSInteger) badgeCount)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [RCTSharedApplication() setApplicationIconBadgeNumber:badgeCount];
+    });
+}
+
+RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        resolve(@([RCTSharedApplication() applicationIconBadgeNumber]));
+    });
 }
 
 - (NSString *)getAPNSToken {
