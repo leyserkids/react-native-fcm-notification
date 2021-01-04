@@ -30,18 +30,32 @@ RCT_EXPORT_METHOD(isNotificationsEnabled
                  :(RCTPromiseResolveBlock)resolve
                  :(RCTPromiseRejectBlock)reject)
 {
-    if (@available(iOS 10.0, *)) {
-        [UNUserNotificationCenter currentNotificationCenter].delegate = self;
-        UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert|UNAuthorizationOptionSound|UNAuthorizationOptionBadge;
+    [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+    UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert|UNAuthorizationOptionSound|UNAuthorizationOptionBadge;
 
-        [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[UIApplication sharedApplication] registerForRemoteNotifications];
-            });
-        }];
-    }
+    [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        [self registeredForRemoteNotifications];
+    }];
 
     resolve(@([RCTConvert BOOL:@(YES)]));
+}
+
+RCT_EXPORT_METHOD(hasPermission
+                  :(RCTPromiseResolveBlock)resolve
+                  :(RCTPromiseRejectBlock)reject)
+{
+    [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+        NSMutableDictionary* ret = [[NSMutableDictionary alloc] init];
+        ret[@"alertSetting"] = @((bool)(settings.alertSetting == UNNotificationSettingEnabled));
+        ret[@"soundSetting"] = @((bool)(settings.soundSetting == UNNotificationSettingEnabled));
+        ret[@"badgeSetting"] = @((bool)(settings.badgeSetting == UNNotificationSettingEnabled));
+        ret[@"lockScreenSetting"] = @((bool)(settings.lockScreenSetting == UNNotificationSettingEnabled));
+        ret[@"notificationCenterSetting"] = @((bool)(settings.notificationCenterSetting == UNNotificationSettingEnabled));
+
+        ret[@"authorizationStatus"] = @(settings.authorizationStatus);
+  
+        resolve(ret);
+    }];
 }
 
 RCT_EXPORT_METHOD(setBadgeCount: (NSInteger) badgeCount)
@@ -72,6 +86,21 @@ RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve rejecter:(RCTPr
     return hexToken;
 }
 
+- (void) registeredForRemoteNotifications {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    });
+}
+
+- (void) isRegisteredForRemoteNotifications: (void (^)(BOOL result))completeBlock {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        BOOL isRegister = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+        if (completeBlock) {
+            completeBlock(isRegister);
+        }
+    });
+}
+
 - (NSString *)hexadecimalStringFromData:(NSData *)data
 {
     NSUInteger dataLength = data.length;
@@ -89,9 +118,6 @@ RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve rejecter:(RCTPr
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
   NSLog(@"APNs device token retrieved: %@", deviceToken);
-
-  // With swizzling disabled you must set the APNs device token here.
-  //[FIRMessaging messaging].APNSToken = deviceToken;
 }
 
 // [START receive_message]
@@ -106,7 +132,7 @@ RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve rejecter:(RCTPr
   // Print message ID.
 
   // Print full message.
-  NSLog(@"%@", userInfo);
+  NSLog(@"receive without handler: %@", userInfo);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -120,7 +146,7 @@ RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve rejecter:(RCTPr
 
 
   // Print full message.
-  NSLog(@"%@", userInfo);
+  NSLog(@"receive with handler: %@", userInfo);
 
   completionHandler(UIBackgroundFetchResultNewData);
 }
@@ -138,7 +164,7 @@ RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve rejecter:(RCTPr
   // [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
 
   // Print full message.
-  NSLog(@"%@", userInfo);
+  NSLog(@"willPresentNotification: %@", userInfo);
 
   // Change this to your preferred presentation option
   completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert);
@@ -154,7 +180,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
   // [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
 
   // Print full message.
-  NSLog(@"%@", userInfo);
+  NSLog(@"didReceiveNotificationResponse: %@", userInfo);
 
   completionHandler();
 }

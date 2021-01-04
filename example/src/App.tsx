@@ -41,6 +41,8 @@ export default function App() {
         console.log(message);
         onChangeInitialTitle(message?.title);
       });
+    } else {
+      FCM.hasPermission().then(console.log);
     }
 
     FCM.onNotificationReceived((message) => {
