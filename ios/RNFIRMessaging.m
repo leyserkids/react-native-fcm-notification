@@ -2,13 +2,14 @@
 
 @implementation RNFIRMessaging
 
-NSString *const FCMNotificationReceived = @"notification_arrival_event";
-NSString *const FCMNewToken = @"new_token_event";
+NSString *const FCMNotificationReceivedEvent = @"notification_arrival_event";
+NSString *const FCMNotificationTapEvent = @"notification_tap_event";
+NSString *const FCMNewTokenEvent = @"new_token_event";
 
 RCT_EXPORT_MODULE()
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[FCMNotificationReceived, FCMNewToken];
+    return @[FCMNotificationReceivedEvent, FCMNewTokenEvent, FCMNotificationTapEvent];
 }
 
 RCT_EXPORT_METHOD(getToken
@@ -120,39 +121,6 @@ RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve rejecter:(RCTPr
   NSLog(@"APNs device token retrieved: %@", deviceToken);
 }
 
-// [START receive_message]
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-  // If you are receiving a notification message while your app is in the background,
-  // this callback will not be fired till the user taps on the notification launching the application.
-  // TODO: Handle data of notification
-
-  // With swizzling disabled you must let Messaging know about the message, for Analytics
-  // [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
-
-  // Print message ID.
-
-  // Print full message.
-  NSLog(@"receive without handler: %@", userInfo);
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-    fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-  // If you are receiving a notification message while your app is in the background,
-  // this callback will not be fired till the user taps on the notification launching the application.
-  // TODO: Handle data of notification
-
-  // With swizzling disabled you must let Messaging know about the message, for Analytics
-  // [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
-
-
-  // Print full message.
-  NSLog(@"receive with handler: %@", userInfo);
-
-  completionHandler(UIBackgroundFetchResultNewData);
-}
-// [END receive_message]
-
-// [START ios_10_message_handling]
 // Receive displayed notifications for iOS 10 devices.
 // Handle incoming notification messages while app is in the foreground.
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
@@ -185,9 +153,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
   completionHandler();
 }
 
-// [END ios_10_message_handling]
-
-// [START refresh_token]
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
     NSLog(@"FCM registration token: %@", fcmToken);
     // Notify about received token.
@@ -197,7 +162,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     // TODO: If necessary send token to application server.
     // Note: This callback is fired at each app startup and whenever a new token is generated.
 }
-// [END refresh_token]
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
   NSLog(@"Unable to register for remote notifications: %@", error);
