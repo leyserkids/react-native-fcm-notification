@@ -118,7 +118,7 @@ RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve rejecter:(RCTPr
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-  NSLog(@"APNs device token retrieved: %@", deviceToken);
+    NSLog(@"APNs device token retrieved: %@", deviceToken);
 }
 
 // Receive displayed notifications for iOS 10 devices.
@@ -126,31 +126,35 @@ RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve rejecter:(RCTPr
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
        willPresentNotification:(UNNotification *)notification
          withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
-  NSDictionary *userInfo = notification.request.content.userInfo;
+    NSDictionary *userInfo = notification.request.content.userInfo;
 
-  // With swizzling disabled you must let Messaging know about the message, for Analytics
-  // [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
+    // With swizzling disabled you must let Messaging know about the message, for Analytics
+    // [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
 
-  // Print full message.
-  NSLog(@"willPresentNotification: %@", userInfo);
+    // Print full message.
+    NSLog(@"willPresentNotification: %@", userInfo);
 
-  // Change this to your preferred presentation option
-  completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert);
+    // Change this to your preferred presentation option
+    completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert);
+
+    [self sendEventWithName:FCMNotificationReceivedEvent body:userInfo];
 }
 
 // Handle notification messages after display notification is tapped by the user.
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
 didReceiveNotificationResponse:(UNNotificationResponse *)response
          withCompletionHandler:(void(^)(void))completionHandler {
-  NSDictionary *userInfo = response.notification.request.content.userInfo;
+    NSDictionary *userInfo = response.notification.request.content.userInfo;
 
-  // With swizzling disabled you must let Messaging know about the message, for Analytics
-  // [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
+    // With swizzling disabled you must let Messaging know about the message, for Analytics
+    // [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
 
-  // Print full message.
-  NSLog(@"didReceiveNotificationResponse: %@", userInfo);
+    // Print full message.
+    NSLog(@"didReceiveNotificationResponse: %@", userInfo);
 
-  completionHandler();
+    completionHandler();
+
+    [self sendEventWithName:FCMNotificationTapEvent body:userInfo];
 }
 
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
@@ -161,10 +165,11 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
      @"FCMToken" object:nil userInfo:dataDict];
     // TODO: If necessary send token to application server.
     // Note: This callback is fired at each app startup and whenever a new token is generated.
+    [self sendEventWithName:FCMNewTokenEvent body:@{@"token": fcmToken}];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-  NSLog(@"Unable to register for remote notifications: %@", error);
+    NSLog(@"Unable to register for remote notifications: %@", error);
 }
 
 @end
