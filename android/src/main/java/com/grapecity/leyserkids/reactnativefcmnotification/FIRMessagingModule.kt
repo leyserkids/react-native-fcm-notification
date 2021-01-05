@@ -13,22 +13,13 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.messaging.FirebaseMessaging
 
 
-class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext), ActivityEventListener {
     override fun getName(): String {
         return "RNFIRMessaging"
     }
 
     init {
-        reactContext.addActivityEventListener( object: ActivityEventListener {
-            override fun onNewIntent(intent: Intent?) {
-//                val extras = intent?.extras;
-                Log.d(TAG, "onNewIntent")
-            }
-
-            override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?) {
-                TODO("Not yet implemented")
-            }
-        })
+        reactContext.addActivityEventListener(this)
     }
 
     @ReactMethod
@@ -129,5 +120,18 @@ class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBa
 
     companion object {
         private const val TAG = "FIRMessagingModule"
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        Log.d(TAG, "onNewIntent")
+        val extras = intent?.extras;
+        val isNotification = extras?.getBoolean(Notification_Flag)
+        if (extras != null && isNotification == true) {
+            ReactNativeEventDelivery(reactApplicationContext).sendNotificationTap(extras)
+        }
+    }
+
+    override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?) {
+        // noop
     }
 }

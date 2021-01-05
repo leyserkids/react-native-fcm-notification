@@ -46,7 +46,11 @@ export default function App() {
     }
 
     FCM.onNotificationReceived((message) => {
-      console.log(message);
+      console.log('onNotificationReceived', message);
+    });
+
+    FCM.onNotificationTap((message) => {
+      console.log('onNotificationTap', message);
     });
 
     FCM.onNewToken((newToken) => {

@@ -5,8 +5,10 @@ const val Notification_Title = "title"
 const val Notification_Body = "body"
 const val Notification_Badge = "badge"
 const val Notification_Extras = "extras"
+const val Notification_Flag = "isNotification"
 
 const val NOTIFICATION_EVENT = "notification_arrival_event"
+const val TAP_EVENT = "notification_tap_event"
 const val NEW_TOKEN_EVENT = "new_token_event"
 
 const val METADATA_DEFAULT_ICON = "com.google.firebase.messaging.default_notification_icon"

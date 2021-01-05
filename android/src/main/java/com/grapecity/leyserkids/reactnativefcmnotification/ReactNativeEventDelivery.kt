@@ -25,6 +25,11 @@ class ReactNativeEventDelivery(private val context: Context) {
         sendEvent(NEW_TOKEN_EVENT, params)
     }
 
+    fun sendNotificationTap(bundle: Bundle) {
+        val params: WritableMap = Arguments.fromBundle(bundle)
+        sendEvent(TAP_EVENT, params)
+    }
+
     private fun sendEvent(eventName: String, @Nullable params: WritableMap) {
         // We need to run this on the main thread, as the React code assumes that is true.
         // Namely, DevServerHelper constructs a Handler() without a Looper, which triggers:
