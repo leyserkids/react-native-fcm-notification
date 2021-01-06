@@ -36,14 +36,18 @@ export default function App() {
       FCM.getGooglePlayServiceStatus().then((x) => setGooglePlayServiceStatus(JSON.stringify(x)));
       FCM.isBadgeCounterSupported().then((x) => setIsBadgeCounterSupported(`${x}`));
       FCM.isBackgroundRestricted().then((x) => setIsBackgroundRestricted(`${x}`));
-
-      FCM.getInitialNotification().then((message) => {
-        console.log(message);
-        onChangeInitialTitle(message?.title);
-      });
     } else {
       FCM.hasPermission().then(console.log);
     }
+
+    FCM.getInitialNotification().then((message) => {
+      console.log('getInitialNotification', message);
+      if (Platform.OS === 'android') {
+        onChangeInitialTitle(message?.title);
+      } else {
+        onChangeInitialTitle((message as any).aps?.alert?.title);
+      }
+    });
 
     FCM.onNotificationReceived((message) => {
       console.log('onNotificationReceived', message);

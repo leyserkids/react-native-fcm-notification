@@ -41,6 +41,16 @@ RCT_EXPORT_METHOD(isNotificationsEnabled
     resolve(@([RCTConvert BOOL:@(YES)]));
 }
 
+RCT_EXPORT_METHOD(getInitialNotification:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    NSDictionary *remoteUserInfo = [self.bridge.launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] mutableCopy];
+    if (remoteUserInfo) {
+        resolve(remoteUserInfo);
+    } else {
+        resolve(nil);
+    }
+}
+
 RCT_EXPORT_METHOD(hasPermission
                   :(RCTPromiseResolveBlock)resolve
                   :(RCTPromiseRejectBlock)reject)
