@@ -22,7 +22,7 @@ RCT_EXPORT_METHOD(getToken
             NSLog(@"Apns Token: %@", apnsToken);
             resolve(token);
         } else {
-            reject(@"e2", @"e2", error);
+            reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, nil);
         }
     }];
 }
@@ -66,11 +66,27 @@ RCT_EXPORT_METHOD(setBadgeCount: (NSInteger) badgeCount)
     });
 }
 
-RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         resolve(@([RCTSharedApplication() applicationIconBadgeNumber]));
     });
+}
+
+RCT_EXPORT_METHOD(unregister: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        [self unregisterForRemoteNotifications];
+        [[FIRMessaging messaging] deleteDataWithCompletion:^(NSError * _Nullable error) {
+            if (error) {
+                reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, nil);
+            } else {
+                resolve(@(true));
+            }
+        }];
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
 }
 
 - (NSString *)getAPNSToken {
@@ -90,6 +106,12 @@ RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve rejecter:(RCTPr
 - (void) registeredForRemoteNotifications {
     dispatch_async(dispatch_get_main_queue(), ^{
         [[UIApplication sharedApplication] registerForRemoteNotifications];
+    });
+}
+
+- (void) unregisterForRemoteNotifications {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[UIApplication sharedApplication] unregisterForRemoteNotifications];
     });
 }
 
