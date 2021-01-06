@@ -44,7 +44,7 @@ export default function App() {
       console.log('getInitialNotification', message);
       if (Platform.OS === 'android') {
         onChangeInitialTitle(message?.title);
-      } else {
+      } else if (message) {
         onChangeInitialTitle((message as any).aps?.alert?.title);
       }
     });
