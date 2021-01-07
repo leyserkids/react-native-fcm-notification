@@ -23,7 +23,7 @@ class NotificationBuilder(private val context: Context) {
         mMetadata =  getManifestMetadata()
     }
 
-    fun sendNotification(title: String, body: String, bundle: Bundle) {
+    fun sendNotification(title: String, body: String, messageId: Int, bundle: Bundle) {
         val intentClass = getMainActivityClass()
         if (intentClass == null) {
             Log.e(TAG, "No activity class found for the notification")
@@ -32,8 +32,8 @@ class NotificationBuilder(private val context: Context) {
         val intent = Intent(context, intentClass)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtras(bundle);
-        val pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(context, messageId, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
 
         val channelId = getChannelId(mMetadata)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -60,7 +60,8 @@ class NotificationBuilder(private val context: Context) {
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(System.currentTimeMillis().toInt(), notificationBuilder.build())
+        Log.d(TAG, "title: $title, bundle: ${bundle.getString("title")}")
+        notificationManager.notify(messageId, notificationBuilder.build())
     }
 
     private fun getManifestMetadata(): Bundle {

@@ -30,7 +30,7 @@ class FIRMessagingService : FirebaseMessagingService() {
 
             notification.putBoolean(Notification_Flag, true)
 
-            NotificationBuilder(this).sendNotification(title, body, notification)
+            NotificationBuilder(this).sendNotification(title, body, messageId, notification)
             ReactNativeEventDelivery(this).sendNotification(notification)
             BadgeHelper(this).setBadgeCount(badge)
         }

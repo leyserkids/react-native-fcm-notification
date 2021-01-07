@@ -126,6 +126,7 @@ class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBa
         Log.d(TAG, "onNewIntent")
         val extras = intent?.extras;
         val isNotification = extras?.getBoolean(Notification_Flag)
+        Log.d(TAG, "onNewIntent: ${extras?.getString("title")}")
         if (extras != null && isNotification == true) {
             ReactNativeEventDelivery(reactApplicationContext).sendNotificationTap(extras)
         }
