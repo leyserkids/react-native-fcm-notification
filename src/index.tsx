@@ -75,7 +75,7 @@ class RNFIRMessagingWrapper {
     return await RNFIRMessaging.isBackgroundRestricted();
   }
 
-  async getInitialNotification(): Promise<Notification> {
+  async getInitialNotification(): Promise<Notification | null> {
     return await RNFIRMessaging.getInitialNotification();
   }
 

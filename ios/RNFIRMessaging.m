@@ -44,8 +44,9 @@ RCT_EXPORT_METHOD(isNotificationsEnabled
 RCT_EXPORT_METHOD(getInitialNotification:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     NSDictionary *remoteUserInfo = [self.bridge.launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] mutableCopy];
-    if (remoteUserInfo) {
-        resolve(remoteUserInfo);
+    if (remoteUserInfo != nil) {
+        NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:remoteUserInfo];
+        resolve(notificationDict);
     } else {
         resolve(nil);
     }
@@ -169,7 +170,8 @@ RCT_EXPORT_METHOD(unregister: (RCTPromiseResolveBlock)resolve reject:(RCTPromise
     // Change this to your preferred presentation option
     completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert);
 
-    [self sendEventWithName:FCMNotificationReceivedEvent body:userInfo];
+    NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
+    [self sendEventWithName:FCMNotificationReceivedEvent body:notificationDict];
 }
 
 // Handle notification messages after display notification is tapped by the user.
@@ -185,8 +187,10 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     NSLog(@"didReceiveNotificationResponse: %@", userInfo);
 
     completionHandler();
+    
+    NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
 
-    [self sendEventWithName:FCMNotificationTapEvent body:userInfo];
+    [self sendEventWithName:FCMNotificationTapEvent body:notificationDict];
 }
 
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
@@ -202,6 +206,30 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     NSLog(@"Unable to register for remote notifications: %@", error);
+}
+
++ (NSDictionary *)remoteMessageUserInfoToDict:(NSDictionary *)userInfo {
+    NSMutableDictionary *notification = [[NSMutableDictionary alloc] init];
+    
+    if (userInfo != nil) {
+        notification[@"id"] = userInfo[@"gcm.message_id"];
+        notification[@"extras"] = userInfo[@"extras"];
+        
+        NSDictionary *apsDict = userInfo[@"aps"];
+        
+        if (apsDict != nil) {
+            notification[@"badge"] = userInfo[@"badge"];
+            
+            if (apsDict[@"alert"] != nil && [apsDict[@"alert"] isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *apsAlertDict = apsDict[@"alert"];
+
+                notification[@"title"] = apsAlertDict[@"title"];
+                notification[@"body"] = apsAlertDict[@"body"];
+            }
+        }
+        
+    }
+    return notification;
 }
 
 @end
