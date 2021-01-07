@@ -92,15 +92,15 @@ class RNFIRMessagingWrapper {
   }
 
   onNotificationReceived(handler: (notification: Notification) => void) {
-    eventEmitter.addListener('notification_arrival_event', handler);
+    return eventEmitter.addListener('notification_arrival_event', handler);
   }
 
   onNewToken(handler: (token: Token) => void) {
-    eventEmitter.addListener('new_token_event', handler);
+    return eventEmitter.addListener('new_token_event', handler);
   }
 
   onNotificationTap(handler: (notification: Notification) => void) {
-    eventEmitter.addListener('notification_tap_event', handler);
+    return eventEmitter.addListener('notification_tap_event', handler);
   }
 }
 
