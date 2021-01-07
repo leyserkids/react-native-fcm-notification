@@ -1,6 +1,6 @@
 {
   "name": "react-native-fcm-notification",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A lightweight React Native Module for integrating Firebase Cloud Messaging",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

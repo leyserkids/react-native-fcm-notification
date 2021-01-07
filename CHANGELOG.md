@@ -1,3 +1,11 @@
+## [0.1.1](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.1.0...v0.1.1) (2021-01-07)
+
+
+### Bug Fixes
+
+* **android:** unmatched notification in getInitialNotification ([0d542d6](https://github.com/leyserkids/react-native-fcm-notification/commit/0d542d62c989dbc7a7c089f9b51bc8d935bb94cf))
+* **ios, android:** unsubscript event ([ba555dc](https://github.com/leyserkids/react-native-fcm-notification/commit/ba555dca7da75adace41cfde2b74d0baa93a2bbf))
+
 # 0.1.0 (2021-01-07)
 
 
