@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.1.1...v0.2.0) (2021-01-08)
+
+
+### Features
+
+* **ios, android:** rename apis and tag platform ([fd2e56b](https://github.com/leyserkids/react-native-fcm-notification/commit/fd2e56bbb09d2fd835305306a45815b55308a72d))
+
 ## [0.1.1](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.1.0...v0.1.1) (2021-01-07)
 
 
