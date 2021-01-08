@@ -55,40 +55,62 @@ class RNFIRMessagingWrapper {
     return await RNFIRMessaging.getToken();
   }
 
-  async deleteToken(): Promise<boolean> {
-    return await RNFIRMessaging.deleteToken();
-  }
-
-  async isNotificationsEnabled(): Promise<boolean> {
-    return await RNFIRMessaging.isNotificationsEnabled();
-  }
-
-  async getGooglePlayServiceStatus(): Promise<GooglePlayServiceStatus> {
-    return await RNFIRMessaging.getGooglePlayServiceStatus();
-  }
-
-  async isBadgeCounterSupported(): Promise<boolean> {
-    return await RNFIRMessaging.isBadgeCounterSupported();
-  }
-
-  async isBackgroundRestricted(): Promise<boolean> {
-    return await RNFIRMessaging.isBackgroundRestricted();
-  }
-
-  async getInitialNotification(): Promise<Notification | null> {
-    return await RNFIRMessaging.getInitialNotification();
-  }
-
-  async hasPermission(): Promise<UNNotificationSettings> {
-    return await RNFIRMessaging.hasPermission();
-  }
-
   async getBadgeCount(): Promise<number> {
     return await RNFIRMessaging.getBadgeCount();
   }
 
   async setBadgeCount(badgeCount: number): Promise<boolean> {
     return await RNFIRMessaging.setBadgeCount(badgeCount);
+  }
+
+  async getInitialNotification(): Promise<Notification | null> {
+    return await RNFIRMessaging.getInitialNotification();
+  }
+
+  async deleteToken(): Promise<boolean> {
+    return await RNFIRMessaging.deleteToken();
+  }
+
+  /**
+   * @platform Android
+   */
+  async isNotificationsEnabled(): Promise<boolean> {
+    return await RNFIRMessaging.isNotificationsEnabled();
+  }
+
+  /**
+   * @platform Android
+   */
+  async getGooglePlayServiceStatus(): Promise<GooglePlayServiceStatus> {
+    return await RNFIRMessaging.getGooglePlayServiceStatus();
+  }
+
+  /**
+   * @platform Android
+   */
+  async isLauncherBadgeSupported(): Promise<boolean> {
+    return await RNFIRMessaging.isLauncherBadgeSupported();
+  }
+
+  /**
+   * @platform Android
+   */
+  async isBackgroundRestricted(): Promise<boolean> {
+    return await RNFIRMessaging.isBackgroundRestricted();
+  }
+
+  /**
+   * @platform iOS
+   */
+  async requestAuthorization(): Promise<boolean> {
+    return await RNFIRMessaging.requestAuthorization();
+  }
+
+  /**
+   * @platform iOS
+   */
+  async getNotificationSettings(): Promise<UNNotificationSettings> {
+    return await RNFIRMessaging.getNotificationSettings();
   }
 
   onNotificationReceived(handler: (notification: Notification) => void) {

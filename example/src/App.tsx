@@ -31,13 +31,13 @@ export default function App() {
 
   React.useEffect(() => {
     getToken();
-    FCM.isNotificationsEnabled().then((x) => setIsNotificationsEnabled(`${x}`));
     if (Platform.OS === 'android') {
+      FCM.isNotificationsEnabled().then((x) => setIsNotificationsEnabled(`${x}`));
       FCM.getGooglePlayServiceStatus().then((x) => setGooglePlayServiceStatus(JSON.stringify(x)));
-      FCM.isBadgeCounterSupported().then((x) => setIsBadgeCounterSupported(`${x}`));
+      FCM.isLauncherBadgeSupported().then((x) => setIsBadgeCounterSupported(`${x}`));
       FCM.isBackgroundRestricted().then((x) => setIsBackgroundRestricted(`${x}`));
     } else {
-      FCM.hasPermission().then(console.log);
+      FCM.requestAuthorization().then(console.log);
     }
 
     FCM.getInitialNotification().then((message) => {

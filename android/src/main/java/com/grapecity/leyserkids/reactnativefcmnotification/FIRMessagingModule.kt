@@ -71,7 +71,7 @@ class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBa
     }
 
     @ReactMethod
-    fun isBadgeCounterSupported(promise: Promise) {
+    fun isLauncherBadgeSupported(promise: Promise) {
         val isSupported = BadgeHelper(reactApplicationContext).isBadgeSupported()
         promise.resolve(isSupported)
     }

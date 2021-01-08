@@ -27,7 +27,7 @@ RCT_EXPORT_METHOD(getToken
     }];
 }
 
-RCT_EXPORT_METHOD(isNotificationsEnabled
+RCT_EXPORT_METHOD(requestAuthorization
                  :(RCTPromiseResolveBlock)resolve
                  :(RCTPromiseRejectBlock)reject)
 {
@@ -52,7 +52,7 @@ RCT_EXPORT_METHOD(getInitialNotification:(RCTPromiseResolveBlock)resolve rejecte
     }
 }
 
-RCT_EXPORT_METHOD(hasPermission
+RCT_EXPORT_METHOD(getNotificationSettings
                   :(RCTPromiseResolveBlock)resolve
                   :(RCTPromiseRejectBlock)reject)
 {
@@ -84,7 +84,7 @@ RCT_EXPORT_METHOD(getBadgeCount: (RCTPromiseResolveBlock)resolve reject:(RCTProm
     });
 }
 
-RCT_EXPORT_METHOD(unregister: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(deleteToken: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 {
     @try {
         [self unregisterForRemoteNotifications];
