@@ -35,9 +35,12 @@ class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBa
             promise.resolve(null)
             return
         }
-
-        val result: WritableMap = Arguments.fromBundle(extras)
-        promise.resolve(result)
+        if (extras.getBoolean(Notification_Flag)) {
+            val result: WritableMap = Arguments.fromBundle(extras)
+            promise.resolve(result)
+        } else {
+            promise.resolve(null)
+        }
     }
 
     @ReactMethod
