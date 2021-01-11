@@ -1,3 +1,10 @@
+## [0.2.1](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.2.0...v0.2.1) (2021-01-11)
+
+
+### Bug Fixes
+
+* **android:** Could not convert class android.os.UserHandle on Xiaomi ([888bc4d](https://github.com/leyserkids/react-native-fcm-notification/commit/888bc4de6fa6a6f5fd37fff7b92d9394edea3e7d))
+
 # [0.2.0](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.1.1...v0.2.0) (2021-01-08)
 
 
