@@ -8,7 +8,7 @@ import {
   Platform,
   TextInput,
 } from 'react-native';
-import FCM from 'react-native-fcm-notification';
+import FCM, { UNAuthorizationStatus } from 'react-native-fcm-notification';
 
 const SERVER_ADDR = 'https://notification.kr1.cc';
 
@@ -37,7 +37,12 @@ export default function App() {
       FCM.isLauncherBadgeSupported().then((x) => setIsBadgeCounterSupported(`${x}`));
       FCM.isBackgroundRestricted().then((x) => setIsBackgroundRestricted(`${x}`));
     } else {
-      FCM.requestAuthorization().then(console.log);
+      FCM.getNotificationSettings().then((s) => {
+        console.log('getNotificationSettings', s);
+        if (s.authorizationStatus !== UNAuthorizationStatus.UNAuthorizationStatusAuthorized) {
+          FCM.requestAuthorization().then(console.log);
+        }
+      });
     }
 
     FCM.getInitialNotification().then((message) => {

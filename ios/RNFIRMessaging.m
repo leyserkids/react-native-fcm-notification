@@ -6,6 +6,20 @@ NSString *const FCMNotificationReceivedEvent = @"notification_arrival_event";
 NSString *const FCMNotificationTapEvent = @"notification_tap_event";
 NSString *const FCMNewTokenEvent = @"new_token_event";
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+        [self registeredForRemoteNotifications];
+    }
+    return self;
+}
+
++ (BOOL)requiresMainQueueSetup {
+    return YES;
+}
+
 RCT_EXPORT_MODULE()
 
 - (NSArray<NSString *> *)supportedEvents {
