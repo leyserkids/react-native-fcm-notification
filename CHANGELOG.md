@@ -1,3 +1,10 @@
+## [0.2.2](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.2.1...v0.2.2) (2021-01-12)
+
+
+### Bug Fixes
+
+* **ios:** unable receive notification after reopen ([adc93c0](https://github.com/leyserkids/react-native-fcm-notification/commit/adc93c0ecf5c4fd15a43e7d6f0cd14383bb924c5))
+
 ## [0.2.1](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.2.0...v0.2.1) (2021-01-11)
 
 
