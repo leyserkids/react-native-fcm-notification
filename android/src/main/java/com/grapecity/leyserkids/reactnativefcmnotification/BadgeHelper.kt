@@ -28,8 +28,8 @@ class BadgeHelper(private val context: Context) {
     }
 
     fun isBadgeSupported(): Boolean {
-        val current = getBadgeCount();
-        return setBadgeCount(current);
+        val current = getBadgeCount()
+        return setBadgeCount(current)
     }
 
     private fun persistentBadgeCount(badgeCount: Int) {

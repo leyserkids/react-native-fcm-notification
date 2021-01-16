@@ -29,7 +29,7 @@ class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBa
             promise.resolve(null)
             return
         }
-        val extras = activity.intent?.extras;
+        val extras = activity.intent?.extras
 
         if (extras == null) {
             promise.resolve(null)
@@ -93,7 +93,7 @@ class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBa
 
     @ReactMethod
     fun isBackgroundRestricted(promise: Promise) {
-        var isRestricted = false;
+        var isRestricted = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val activityManager = reactApplicationContext
                 .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -127,7 +127,7 @@ class FIRMessagingModule(reactContext: ReactApplicationContext) : ReactContextBa
 
     override fun onNewIntent(intent: Intent?) {
         Log.d(TAG, "onNewIntent")
-        val extras = intent?.extras;
+        val extras = intent?.extras
         val isNotification = extras?.getBoolean(Notification_Flag)
         Log.d(TAG, "onNewIntent: ${extras?.getString("title")}")
         if (extras != null && isNotification == true) {

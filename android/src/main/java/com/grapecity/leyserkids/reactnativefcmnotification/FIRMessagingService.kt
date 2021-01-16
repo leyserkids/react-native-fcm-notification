@@ -9,7 +9,7 @@ class FIRMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "onMessageReceived From: ${remoteMessage.from}")
 
-        val rawIdHashCode = remoteMessage.messageId.hashCode();
+        val rawIdHashCode = remoteMessage.messageId.hashCode()
         val messageId = if (rawIdHashCode != 0) rawIdHashCode else System.currentTimeMillis().toInt()
 
         // Check if message contains a data payload.

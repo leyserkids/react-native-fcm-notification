@@ -17,7 +17,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 
 class NotificationBuilder(private val context: Context) {
-    private val mMetadata: Bundle;
+    private val mMetadata: Bundle
 
     init {
         mMetadata =  getManifestMetadata()
@@ -31,7 +31,7 @@ class NotificationBuilder(private val context: Context) {
         }
         val intent = Intent(context, intentClass)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtras(bundle);
+        intent.putExtras(bundle)
         val pendingIntent = PendingIntent.getActivity(context, messageId, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
 
