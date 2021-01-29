@@ -42,7 +42,7 @@ class NotificationBuilder(private val context: Context) {
             .setContentTitle(title)
             .setContentText(body)
             .setAutoCancel(true)
-            .setVisibility(NotificationCompat.VISIBILITY_SECRET)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
@@ -57,6 +57,9 @@ class NotificationBuilder(private val context: Context) {
                 "fcm_default_channel",
                 NotificationManager.IMPORTANCE_HIGH)
             channel.description = "High"
+            channel.enableLights(true)
+            channel.enableVibration(true)
+            channel.setShowBadge(true)
             notificationManager.createNotificationChannel(channel)
         }
 
