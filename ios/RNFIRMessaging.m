@@ -11,6 +11,7 @@ NSString *const FCMNewTokenEvent = @"new_token_event";
     self = [super init];
     if (self) {
         [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+        [FIRMessaging messaging].delegate = self;
         [self registeredForRemoteNotifications];
     }
     return self;
@@ -33,8 +34,9 @@ RCT_EXPORT_METHOD(getToken
     [self registeredForRemoteNotifications];
     [[FIRMessaging messaging] tokenWithCompletion:^(NSString * _Nullable token, NSError * _Nullable error) {
         if (error == nil && token != nil) {
-            NSString *apnsToken = [self getAPNSToken];
-            NSLog(@"Apns Token: %@", apnsToken);
+            // NSString *apnsToken = [self getAPNSToken];
+            // NSLog(@"Apns Token: %@", apnsToken);
+            NSLog(@"FCM Token: %@", token);
             resolve(token);
         } else {
             reject([NSString stringWithFormat:@"%ld", (long)error.code], error.localizedDescription, nil);
@@ -210,10 +212,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
     NSLog(@"FCM registration token: %@", fcmToken);
-    // Notify about received token.
-    NSDictionary *dataDict = [NSDictionary dictionaryWithObject:fcmToken forKey:@"token"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:
-     @"FCMToken" object:nil userInfo:dataDict];
     // Note: This callback is fired at each app startup and whenever a new token is generated.
     [self sendEventWithName:FCMNewTokenEvent body:@{@"token": fcmToken}];
 }

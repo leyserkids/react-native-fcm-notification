@@ -8,6 +8,6 @@
 
 @import UserNotifications;
 
-@interface RNFIRMessaging : RCTEventEmitter <RCTBridgeModule, UNUserNotificationCenterDelegate>
+@interface RNFIRMessaging : RCTEventEmitter <RCTBridgeModule, UNUserNotificationCenterDelegate, FIRMessagingDelegate>
 
 @end
