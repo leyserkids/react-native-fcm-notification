@@ -1,6 +1,8 @@
 #import "RNFIRMessaging.h"
 
-@implementation RNFIRMessaging
+@implementation RNFIRMessaging {
+    bool _hasListeners;
+}
 
 NSString *const FCMNotificationReceivedEvent = @"notification_arrival_event";
 NSString *const FCMNotificationTapEvent = @"notification_tap_event";
@@ -19,6 +21,14 @@ NSString *const FCMNewTokenEvent = @"new_token_event";
 
 + (BOOL)requiresMainQueueSetup {
     return YES;
+}
+
+- (void)startObserving {
+    _hasListeners = YES;
+}
+
+- (void)stopObserving {
+    _hasListeners = NO;
 }
 
 RCT_EXPORT_MODULE()
@@ -213,7 +223,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
     NSLog(@"FCM registration token: %@", fcmToken);
     // Note: This callback is fired at each app startup and whenever a new token is generated.
-    [self sendEventWithName:FCMNewTokenEvent body:@{@"token": fcmToken}];
+    if (_hasListeners && fcmToken != nil) {
+        [self sendEventWithName:FCMNewTokenEvent body:@{@"token": fcmToken}];
+    }
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
