@@ -1,3 +1,12 @@
+## [0.2.3](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.2.2...v0.2.3) (2021-01-30)
+
+
+### Bug Fixes
+
+* **android:** notification not shown on huawei ([1ddeaa0](https://github.com/leyserkids/react-native-fcm-notification/commit/1ddeaa0e0cb7f2ad18a5f3a46809eec470e6a90c))
+* **ios:** didReceiveRegistrationToken not working ([7484435](https://github.com/leyserkids/react-native-fcm-notification/commit/7484435de4bc431f623c2ef05d02fabd69c37f7f))
+* **ios:** not register remote notification on getToken after deleteToken ([354a593](https://github.com/leyserkids/react-native-fcm-notification/commit/354a593a419fae6a0c70281ba19c7d8c73e1bd0d))
+
 ## [0.2.2](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.2.1...v0.2.2) (2021-01-12)
 
 
