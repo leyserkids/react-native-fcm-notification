@@ -1,3 +1,10 @@
+## [0.2.4](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.2.3...v0.2.4) (2021-01-30)
+
+
+### Bug Fixes
+
+* **ios:** fix crash when token is nil and also fix no listeners warning ([59258ec](https://github.com/leyserkids/react-native-fcm-notification/commit/59258ecfed15a92bae28c39ee432a01967a3c7cb))
+
 ## [0.2.3](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.2.2...v0.2.3) (2021-01-30)
 
 
