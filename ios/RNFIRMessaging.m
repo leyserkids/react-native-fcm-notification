@@ -30,6 +30,7 @@ RCT_EXPORT_METHOD(getToken
                  :(RCTPromiseResolveBlock)resolve
                  :(RCTPromiseRejectBlock)reject)
 {
+    [self registeredForRemoteNotifications];
     [[FIRMessaging messaging] tokenWithCompletion:^(NSString * _Nullable token, NSError * _Nullable error) {
         if (error == nil && token != nil) {
             NSString *apnsToken = [self getAPNSToken];
@@ -213,7 +214,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     NSDictionary *dataDict = [NSDictionary dictionaryWithObject:fcmToken forKey:@"token"];
     [[NSNotificationCenter defaultCenter] postNotificationName:
      @"FCMToken" object:nil userInfo:dataDict];
-    // TODO: If necessary send token to application server.
     // Note: This callback is fired at each app startup and whenever a new token is generated.
     [self sendEventWithName:FCMNewTokenEvent body:@{@"token": fcmToken}];
 }
