@@ -11,6 +11,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <Firebase.h>
+#import <RNFIRMessaging.h>
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -66,15 +67,15 @@ static void InitializeFlipper(UIApplication *application) {
     fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
   // If you are receiving a notification message while your app is in the background,
   // this callback will not be fired till the user taps on the notification launching the application.
-  // TODO: Handle data of notification
 
   // With swizzling disabled you must let Messaging know about the message, for Analytics
   // [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
 
   // Print full message.
-  NSLog(@"receive with handler: %@", userInfo);
+  NSLog(@"didReceiveRemoteNotification: %@", userInfo);
 
   completionHandler(UIBackgroundFetchResultNewData);
+  [RNFIRMessaging didReceiveRemoteNotification:userInfo];
 }
 
 @end

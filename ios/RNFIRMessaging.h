@@ -10,4 +10,6 @@
 
 @interface RNFIRMessaging : RCTEventEmitter <RCTBridgeModule, UNUserNotificationCenterDelegate, FIRMessagingDelegate>
 
++ (void)didReceiveRemoteNotification:(NSDictionary *)userInfo;
+
 @end
