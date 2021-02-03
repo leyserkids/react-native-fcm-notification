@@ -2,8 +2,6 @@
 
 @implementation RNFIRMessaging
 
-NSString *const RNFIRMessagingStorageKey = @"_didReceiveRemoteNotificationKey";
-
 NSString *const FCMNotificationReceivedEvent = @"notification_arrival_event";
 NSString *const FCMNotificationTapEvent = @"notification_tap_event";
 NSString *const FCMNewTokenEvent = @"new_token_event";
@@ -75,21 +73,12 @@ RCT_EXPORT_METHOD(requestAuthorization
 RCT_EXPORT_METHOD(getInitialNotification:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     NSDictionary *notificationDict;
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *remoteUserInfoFromLunchOptions = [self.bridge.launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] mutableCopy];
     // Open by tap notification
     if (remoteUserInfoFromLunchOptions != nil) {
         notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:remoteUserInfoFromLunchOptions];
-    } else {
-        // Open by tap app icon
-        NSDictionary *remoteUserInfoFromDirectlyOpen = [defaults dictionaryForKey:RNFIRMessagingStorageKey];
-        if (remoteUserInfoFromDirectlyOpen != nil) {
-            notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:remoteUserInfoFromDirectlyOpen];
-        }
     }
 
-    [defaults removeObjectForKey:RNFIRMessagingStorageKey];
     resolve(notificationDict);
 }
 
@@ -211,8 +200,6 @@ RCT_EXPORT_METHOD(deleteToken: (RCTPromiseResolveBlock)resolve reject:(RCTPromis
     // Change this to your preferred presentation option
     completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert);
 
-    // [[NSUserDefaults standardUserDefaults] removeObjectForKey:RNFIRMessagingStorageKey];
-
     // NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
     // [self sendEventWithName:FCMNotificationReceivedEvent body:notificationDict];
 }
@@ -250,16 +237,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 }
 
 + (void)didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    if (userInfo != nil) {
-      if (_hasListeners) {
-        if (rNFIRMessagingInstance != nil) {
-          NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
-          [rNFIRMessagingInstance sendEventWithName:FCMNotificationReceivedEvent body:notificationDict];
-        }
-      } else {
-          NSLog(@"save to NSUserDefaults");
-          [[NSUserDefaults standardUserDefaults] setObject:userInfo forKey:RNFIRMessagingStorageKey];
-      }
+    if (userInfo != nil && _hasListeners && rNFIRMessagingInstance != nil) {
+        NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
+        [rNFIRMessagingInstance sendEventWithName:FCMNotificationReceivedEvent body:notificationDict];
     }
 }
 
