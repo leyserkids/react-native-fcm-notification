@@ -1,3 +1,16 @@
+# [0.3.0](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.2.4...v0.3.0) (2021-02-03)
+
+
+### Bug Fixes
+
+* **ios:** duplicated event and no handler warning ([ef56307](https://github.com/leyserkids/react-native-fcm-notification/commit/ef56307a0731973bbfe86fbd68a69be33b0a690c))
+* **ios:** enhance getInitialNotification ([d85fa68](https://github.com/leyserkids/react-native-fcm-notification/commit/d85fa683f9d8d14d87d0b1647b33ab9c8f5b45cf))
+
+
+### Features
+
+* **ios:** trigger event on background and fix getInitialNotification on user open app directly ([a7ca590](https://github.com/leyserkids/react-native-fcm-notification/commit/a7ca5907181709e49372e9a933e002af25618fda))
+
 ## [0.2.4](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.2.3...v0.2.4) (2021-01-30)
 
 
