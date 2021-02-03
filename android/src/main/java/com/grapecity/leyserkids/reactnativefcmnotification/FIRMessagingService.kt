@@ -1,5 +1,6 @@
 package com.grapecity.leyserkids.reactnativefcmnotification
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -31,7 +32,13 @@ class FIRMessagingService : FirebaseMessagingService() {
             notification.putBoolean(Notification_Flag, true)
 
             NotificationBuilder(this).sendNotification(title, body, messageId, notification)
-            FIRMessageReceiverManager.onMessageReceived(notification)
+
+            Intent("com.grapecity.leyserkids.reactnativefcmnotification.MessageReceived").also { intent ->
+                intent.putExtras(notification)
+                intent.setPackage(packageName)
+                sendBroadcast(intent)
+            }
+
             BadgeHelper(this).setBadgeCount(badge)
             ReactNativeEventDelivery(this).sendNotification(notification)
         }
