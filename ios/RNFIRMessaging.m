@@ -210,8 +210,8 @@ RCT_EXPORT_METHOD(deleteToken: (RCTPromiseResolveBlock)resolve reject:(RCTPromis
 
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:RNFIRMessagingStorageKey];
 
-    NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
-    [self sendEventWithName:FCMNotificationReceivedEvent body:notificationDict];
+    // NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
+    // [self sendEventWithName:FCMNotificationReceivedEvent body:notificationDict];
 }
 
 // Handle notification messages after display notification is tapped by the user.
@@ -229,8 +229,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     completionHandler();
     
     NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
-
-    [self sendEventWithName:FCMNotificationTapEvent body:notificationDict];
+    if (_hasListeners) {
+        [self sendEventWithName:FCMNotificationTapEvent body:notificationDict];
+    }
 }
 
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
