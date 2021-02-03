@@ -75,18 +75,21 @@ RCT_EXPORT_METHOD(requestAuthorization
 RCT_EXPORT_METHOD(getInitialNotification:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     NSDictionary *notificationDict;
+
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *remoteUserInfoFromDirectlyOpen = [defaults dictionaryForKey:@"_didReceiveRemoteNotificationKey"];
-    if (remoteUserInfoFromDirectlyOpen != nil) {
-        [defaults removeObjectForKey:RNFIRMessagingStorageKey];
-        notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:remoteUserInfoFromDirectlyOpen];
-    } else{
-        NSDictionary *remoteUserInfoFromLunchOptions = [self.bridge.launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] mutableCopy];
-        if (remoteUserInfoFromLunchOptions != nil) {
-            notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:remoteUserInfoFromLunchOptions];
+    NSDictionary *remoteUserInfoFromLunchOptions = [self.bridge.launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] mutableCopy];
+    // Open by tap notification
+    if (remoteUserInfoFromLunchOptions != nil) {
+        notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:remoteUserInfoFromLunchOptions];
+    } else {
+        // Open by tap app icon
+        NSDictionary *remoteUserInfoFromDirectlyOpen = [defaults dictionaryForKey:RNFIRMessagingStorageKey];
+        if (remoteUserInfoFromDirectlyOpen != nil) {
+            notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:remoteUserInfoFromDirectlyOpen];
         }
     }
- 
+
+    [defaults removeObjectForKey:RNFIRMessagingStorageKey];
     resolve(notificationDict);
 }
 
@@ -208,7 +211,7 @@ RCT_EXPORT_METHOD(deleteToken: (RCTPromiseResolveBlock)resolve reject:(RCTPromis
     // Change this to your preferred presentation option
     completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert);
 
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:RNFIRMessagingStorageKey];
+    // [[NSUserDefaults standardUserDefaults] removeObjectForKey:RNFIRMessagingStorageKey];
 
     // NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
     // [self sendEventWithName:FCMNotificationReceivedEvent body:notificationDict];
