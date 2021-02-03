@@ -24,6 +24,11 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+        <receiver android:name=".MyNotificationReceiver" android:exported="false">
+          <intent-filter>
+            <action android:name="com.grapecity.leyserkids.reactnativefcmnotification.MessageReceived"/>
+          </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
