@@ -1,3 +1,11 @@
+# [0.4.0](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.3.0...v0.4.0) (2021-02-03)
+
+
+### Features
+
+* **android:** add custom receiver ([7d3db49](https://github.com/leyserkids/react-native-fcm-notification/commit/7d3db496529674ccf69e1493b040cb1a3ad38602))
+* **ios:** remove saved notification ([5cab59e](https://github.com/leyserkids/react-native-fcm-notification/commit/5cab59e4b099c06a6b8d510eb854aa350bfd1334))
+
 # [0.3.0](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.2.4...v0.3.0) (2021-02-03)
 
 
