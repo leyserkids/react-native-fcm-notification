@@ -31,8 +31,9 @@ class FIRMessagingService : FirebaseMessagingService() {
             notification.putBoolean(Notification_Flag, true)
 
             NotificationBuilder(this).sendNotification(title, body, messageId, notification)
-            ReactNativeEventDelivery(this).sendNotification(notification)
+            FIRMessageReceiverManager.onMessageReceived(notification)
             BadgeHelper(this).setBadgeCount(badge)
+            ReactNativeEventDelivery(this).sendNotification(notification)
         }
     }
 
