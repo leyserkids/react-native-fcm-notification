@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.4.0...v0.5.0) (2021-02-03)
+
+
+### Features
+
+* **android:** remove custom receiver and change to explicit broadcast ([2f581d3](https://github.com/leyserkids/react-native-fcm-notification/commit/2f581d3d62a59f7db62190f74252e9c494f7db40))
+
 # [0.4.0](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.3.0...v0.4.0) (2021-02-03)
 
 
