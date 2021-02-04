@@ -49,6 +49,11 @@ class NotificationBuilder(private val context: Context) {
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))
             .setPriority(NotificationCompat.PRIORITY_MAX)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val accentID: Int = context.resources.getIdentifier("accent", "color", context.packageName)
+            notificationBuilder.color = context.resources.getColor(accentID, null)
+        }
+
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Since android Oreo notification channel is needed.
