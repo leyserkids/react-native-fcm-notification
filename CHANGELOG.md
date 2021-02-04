@@ -1,3 +1,10 @@
+## [0.5.1](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.5.0...v0.5.1) (2021-02-04)
+
+
+### Features
+
+* **android:** add notification icon color ([578e1ef](https://github.com/leyserkids/react-native-fcm-notification/commit/578e1ef5312bbd470d71fe518a66a8b16d0d9639))
+
 # [0.5.0](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.4.0...v0.5.0) (2021-02-03)
 
 
