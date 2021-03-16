@@ -1,3 +1,15 @@
+# [0.6.0](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.5.1...v0.6.0) (2021-03-16)
+
+
+### Bug Fixes
+
+* **example:** update podfile.lock and add FIRDebugEnabled ([5f72cac](https://github.com/leyserkids/react-native-fcm-notification/commit/5f72cacd17cba438326aa941433ce7c6ff777f74))
+
+
+### Features
+
+* **ios, Android:** introduced analytics ([1ccfdc8](https://github.com/leyserkids/react-native-fcm-notification/commit/1ccfdc8c84237d46fc53a863df2e0b3e45d54ba0))
+
 ## [0.5.1](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.5.0...v0.5.1) (2021-02-04)
 
 
