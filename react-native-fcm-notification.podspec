@@ -19,4 +19,5 @@ Pod::Spec.new do |s|
 
   s.dependency "React"
   s.dependency "Firebase/Messaging", "7.3.0"
+  s.dependency "Firebase/Analytics", "7.3.0"
 end
