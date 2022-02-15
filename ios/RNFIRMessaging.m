@@ -200,8 +200,12 @@ RCT_EXPORT_METHOD(deleteToken: (RCTPromiseResolveBlock)resolve reject:(RCTPromis
     // Change this to your preferred presentation option
     completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert);
 
-    // NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
-    // [self sendEventWithName:FCMNotificationReceivedEvent body:notificationDict];
+    if (@available(iOS 15.2, *)) {
+        NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
+        if (_hasListeners) {
+            [self sendEventWithName:FCMNotificationReceivedEvent body:notificationDict];
+        }
+    }
 }
 
 // Handle notification messages after display notification is tapped by the user.
