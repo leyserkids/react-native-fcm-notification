@@ -1,3 +1,10 @@
+## [0.6.1](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.6.0...v0.6.1) (2022-02-15)
+
+
+### Bug Fixes
+
+* KR-20000 ([09ae982](https://github.com/leyserkids/react-native-fcm-notification/commit/09ae982759f3ac5d2e2535b4c5cd75f47c60c48b))
+
 # [0.6.0](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.5.1...v0.6.0) (2021-03-16)
 
 
