@@ -10,15 +10,23 @@ import {
 } from 'react-native';
 import FCM, { UNAuthorizationStatus } from 'react-native-fcm-notification';
 
-const SERVER_ADDR = 'https://notification.kr1.cc';
+const SERVER_ADDR = 'https://notification.dev.kr1.cc';
 
 export default function App() {
   console.log('initialize');
   const [token, setToken] = React.useState<string | undefined>();
-  const [googlePlayServiceStatus, setGooglePlayServiceStatus] = React.useState<string | undefined>();
-  const [isBadgeCounterSupported, setIsBadgeCounterSupported] = React.useState<string | undefined>();
-  const [isBackgroundRestricted, setIsBackgroundRestricted] = React.useState<string | undefined>();
-  const [isNotificationsEnabled, setIsNotificationsEnabled] = React.useState<string | undefined>();
+  const [googlePlayServiceStatus, setGooglePlayServiceStatus] = React.useState<
+    string | undefined
+  >();
+  const [isBadgeCounterSupported, setIsBadgeCounterSupported] = React.useState<
+    string | undefined
+  >();
+  const [isBackgroundRestricted, setIsBackgroundRestricted] = React.useState<
+    string | undefined
+  >();
+  const [isNotificationsEnabled, setIsNotificationsEnabled] = React.useState<
+    string | undefined
+  >();
 
   const [title, onChangeTitle] = React.useState('Title text');
   const [body, onChangeBody] = React.useState('Body text');
@@ -32,14 +40,25 @@ export default function App() {
   React.useEffect(() => {
     getToken();
     if (Platform.OS === 'android') {
-      FCM.isNotificationsEnabled().then((x) => setIsNotificationsEnabled(`${x}`));
-      FCM.getGooglePlayServiceStatus().then((x) => setGooglePlayServiceStatus(JSON.stringify(x)));
-      FCM.isLauncherBadgeSupported().then((x) => setIsBadgeCounterSupported(`${x}`));
-      FCM.isBackgroundRestricted().then((x) => setIsBackgroundRestricted(`${x}`));
+      FCM.isNotificationsEnabled().then((x) =>
+        setIsNotificationsEnabled(`${x}`)
+      );
+      FCM.getGooglePlayServiceStatus().then((x) =>
+        setGooglePlayServiceStatus(JSON.stringify(x))
+      );
+      FCM.isLauncherBadgeSupported().then((x) =>
+        setIsBadgeCounterSupported(`${x}`)
+      );
+      FCM.isBackgroundRestricted().then((x) =>
+        setIsBackgroundRestricted(`${x}`)
+      );
     } else {
       FCM.getNotificationSettings().then((s) => {
         console.log('getNotificationSettings', s);
-        if (s.authorizationStatus !== UNAuthorizationStatus.UNAuthorizationStatusAuthorized) {
+        if (
+          s.authorizationStatus !==
+          UNAuthorizationStatus.UNAuthorizationStatusAuthorized
+        ) {
           FCM.requestAuthorization().then(console.log);
         }
       });
@@ -68,9 +87,12 @@ export default function App() {
   }, []);
 
   const invokeServerPush = (isDelay: boolean = false) => {
-    fetch(`${SERVER_ADDR}/api/fcm?isDelay=${isDelay}&token=${token}&title=${title}&body=${body}`, {
-      method: 'GET',
-    })
+    fetch(
+      `${SERVER_ADDR}/api/fcm?isDelay=${isDelay}&token=${token}&title=${title}&body=${body}`,
+      {
+        method: 'GET',
+      }
+    )
       .then(async (r) => Alert.alert('Invoke Success', await r.text()))
       .catch((err) => {
         Alert.alert('Invoke Error', `${err}`);
