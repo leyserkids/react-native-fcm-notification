@@ -8,6 +8,7 @@ NSString *const FCMNewTokenEvent = @"new_token_event";
 
 static bool _hasListeners;
 static RNFIRMessaging *rNFIRMessagingInstance;
+static NSString *_lastSentMessageId;
 
 - (instancetype)init
 {
@@ -202,8 +203,12 @@ RCT_EXPORT_METHOD(deleteToken: (RCTPromiseResolveBlock)resolve reject:(RCTPromis
 
     if (@available(iOS 15.2, *)) {
         NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
-        if (_hasListeners) {
+        NSString *messageId = notificationDict[@"id"];
+        if (![_lastSentMessageId isEqual: messageId] && _hasListeners) {
             [self sendEventWithName:FCMNotificationReceivedEvent body:notificationDict];
+            _lastSentMessageId = messageId;
+        } else {
+            NSLog(@"[willPresentNotification] The notification with messageId: %@ has already been sent, ignore here", messageId);
         }
     }
 }
@@ -243,7 +248,13 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 + (void)didReceiveRemoteNotification:(NSDictionary *)userInfo {
     if (userInfo != nil && _hasListeners && rNFIRMessagingInstance != nil) {
         NSDictionary *notificationDict = [RNFIRMessaging remoteMessageUserInfoToDict:userInfo];
-        [rNFIRMessagingInstance sendEventWithName:FCMNotificationReceivedEvent body:notificationDict];
+        NSString *messageId = notificationDict[@"id"];
+        if (![_lastSentMessageId isEqual: messageId]) {
+            [rNFIRMessagingInstance sendEventWithName:FCMNotificationReceivedEvent body:notificationDict];
+            _lastSentMessageId = messageId;
+        } else {
+            NSLog(@"[didReceiveRemoteNotification] The notification with messageId: %@ has already been sent, ignore here", messageId);
+        }
     }
 }
 
