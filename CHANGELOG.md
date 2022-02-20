@@ -1,3 +1,10 @@
+## [0.6.2](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.6.1...v0.6.2) (2022-02-20)
+
+
+### Bug Fixes
+
+* **ios:** repeated trigger onNotificationReceived event ([e81e199](https://github.com/leyserkids/react-native-fcm-notification/commit/e81e1990d69fe910ae75f51d285be48992f34086))
+
 ## [0.6.1](https://github.com/leyserkids/react-native-fcm-notification/compare/v0.6.0...v0.6.1) (2022-02-15)
 
 
